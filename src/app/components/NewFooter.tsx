@@ -116,10 +116,8 @@ export function NewFooter() {
       <div className="pt-12 px-4 sm:px-8">
         {/* Mobile Layout */}
         <div className="lg:hidden mb-8">
-          <Link to="/" className="flex items-center gap-[13px] mb-4">
-            <div className="h-9 w-auto shrink-0">
-              <img src={arkLogo} alt="ARK" className="h-full w-full object-contain" />
-            </div>
+          <Link to="/" className="inline-flex items-center gap-[13px] mb-4">
+            <img src={arkLogo} alt="ARK" className="h-9 w-auto object-contain" />
           </Link>
           
           <p className="text-[14px] leading-[21px] text-[#717182] dark:text-[#BEBEC8] font-['PP_Monument',sans-serif] font-medium">
