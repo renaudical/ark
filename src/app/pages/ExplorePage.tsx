@@ -889,6 +889,7 @@ export function ExplorePage() {
   const [composerProject, setComposerProject] = useState('');
   const [composerPostType, setComposerPostType] = useState<CreatorPostType | null>(null);
   const [composerImage, setComposerImage] = useState<File | null>(null);
+  const [mobileComposerOpen, setMobileComposerOpen] = useState(false);
   const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
   const [postTypeDropdownOpen, setPostTypeDropdownOpen] = useState(false);
 
@@ -958,6 +959,102 @@ export function ExplorePage() {
                   Discover what the community is building, trending projects, and creators to follow.
                 </p>
               </motion.div>
+
+              {/* Mobile Post to Feed Toggle */}
+              <div className="sm:hidden mb-4">
+                <button
+                  onClick={() => setMobileComposerOpen(!mobileComposerOpen)}
+                  className="w-full flex items-center justify-between px-5 py-3 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 transition-all"
+                  style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}
+                >
+                  <span className="flex items-center gap-2">
+                    <PencilSimple className="h-3.5 w-3.5" weight="bold" />
+                    POST TO FEED
+                  </span>
+                  <CaretDown className={`h-3.5 w-3.5 transition-transform duration-300 ${mobileComposerOpen ? 'rotate-180' : ''}`} weight="bold" />
+                </button>
+                <AnimatePresence>
+                  {mobileComposerOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-2 backdrop-blur-lg bg-white/40 dark:bg-black/20 border border-white/30 dark:border-white/10 rounded-[2px] p-5 relative z-20">
+                        <div className="relative">
+                          <textarea
+                            value={composerText}
+                            onChange={(e) => setComposerText(e.target.value)}
+                            placeholder="Share an update with the community..."
+                            className="w-full bg-white/20 dark:bg-white/5 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] p-3 pb-8 text-[#212121] dark:text-white placeholder-[#212121]/30 dark:placeholder-white/30 resize-none focus:outline-none focus:border-[#1782FF]/50 transition-colors"
+                            style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.85rem', lineHeight: '1.5', minHeight: '128px' }}
+                          />
+                          <label
+                            className="absolute bottom-3 right-3 cursor-pointer text-[#212121]/30 dark:text-white/30 hover:text-[#1782FF] transition-colors"
+                            title={composerImage ? composerImage.name : 'Attach image (GIF, JPG, PNG)'}
+                          >
+                            <Image className={`h-4 w-4 ${composerImage ? 'text-[#1782FF]' : ''}`} weight="bold" />
+                            <input type="file" accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png" className="hidden" onChange={(e) => setComposerImage(e.target.files?.[0] ?? null)} />
+                          </label>
+                        </div>
+                        <div className="relative mt-3">
+                          <button
+                            onClick={() => { setProjectDropdownOpen(!projectDropdownOpen); setPostTypeDropdownOpen(false); }}
+                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
+                          >
+                            {composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
+                            <CaretDown className={`h-3 w-3 transition-transform ${projectDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
+                          </button>
+                          <AnimatePresence>
+                            {projectDropdownOpen && (
+                              <motion.div className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.15 }}>
+                                {['6-DOF Robot Arm with Computer Vision', 'Custom Mechanical Keyboard from Scratch', 'Raspberry Pi Weather Station Network', 'DIY FPV Racing Drone Build', '3D Printed Planetary Gear Train'].map((proj) => (
+                                  <button key={proj} onClick={() => { setComposerProject(proj); setProjectDropdownOpen(false); }} className={`w-full text-left px-3 py-2.5 transition-colors ${composerProject === proj ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>{proj}</button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <div className="relative mt-3">
+                          <button
+                            onClick={() => { setPostTypeDropdownOpen(!postTypeDropdownOpen); setProjectDropdownOpen(false); }}
+                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
+                          >
+                            {composerPostType || <span>Post Type <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Required)</span></span>}
+                            <CaretDown className={`h-3 w-3 transition-transform ${postTypeDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
+                          </button>
+                          <AnimatePresence>
+                            {postTypeDropdownOpen && (
+                              <motion.div className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.15 }}>
+                                {(['New Project', 'Project Update', 'Announcement', 'Shameless Self-Promotion'] as CreatorPostType[]).map((pt) => (
+                                  <button key={pt} onClick={() => { setComposerPostType(pt); setPostTypeDropdownOpen(false); }} className={`w-full text-left px-3 py-2.5 transition-colors ${composerPostType === pt ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>
+                                    {pt === 'New Project' ? `✨ ${pt}` : pt === 'Shameless Self-Promotion' ? `😜 ${pt}` : pt === 'Announcement' ? `📣 ${pt}` : pt === 'Project Update' ? `🚀 ${pt}` : pt}
+                                  </button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <Button
+                          className="w-full mt-3 text-white relative overflow-hidden group rounded-[2px]"
+                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}
+                          disabled={!composerText.trim() || !composerPostType}
+                        >
+                          <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }} />
+                          <div className="absolute inset-0 bg-[#1782FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <span className="relative z-10 flex items-center justify-center gap-1.5">
+                            <PaperPlaneTilt className="h-3.5 w-3.5" weight="fill" /> POST TO FEED
+                          </span>
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Filter Bar */}
               <motion.div
@@ -1142,7 +1239,7 @@ export function ExplorePage() {
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   {/* Post to Feed Composer */}
-                  <div className="backdrop-blur-lg bg-white/40 dark:bg-black/20 border border-white/30 dark:border-white/10 rounded-[2px] p-5 relative z-20">
+                  <div className="hidden sm:block backdrop-blur-lg bg-white/40 dark:bg-black/20 border border-white/30 dark:border-white/10 rounded-[2px] p-5 relative z-20">
                     <div className="flex items-center gap-2 mb-4">
                       <PencilSimple className="h-4 w-4 text-[#1782FF]" weight="bold" />
                       <h3 className="text-[#212121] dark:text-white uppercase" style={{ fontFamily: "'PP Monument Extended', sans-serif", fontSize: '0.9rem' }}>
