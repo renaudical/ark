@@ -30,13 +30,14 @@ import {
   Megaphone,
   PencilSimple,
   PaperPlaneTilt,
+  Paperclip,
 } from '@phosphor-icons/react';
 
 // ─── Types ───────────────────────────────────────────────────────────
 type FeedFilter = 'new' | 'following';
 type FeedCardType = 'new_project' | 'updated_project' | 'trending_project' | 'milestone' | 'community_challenge' | 'weekly_roundup' | 'creator_post';
 
-type CreatorPostType = 'Project Update' | 'Announcement' | 'Shameless Self-Promotion';
+type CreatorPostType = 'New Project' | 'Project Update' | 'Announcement' | 'Shameless Self-Promotion';
 
 interface FeedItem {
   id: string;
@@ -109,6 +110,19 @@ const categories = [
   'CNC & LASER',
   'DRONES',
   'IOT & SMART HOME',
+];
+
+// ─── Post Type Filters ───────────────────────────────────────────────
+const postTypeFilters = [
+  'ALL POST TYPES',
+  'NEW PROJECT',
+  'PROJECT UPDATE',
+  'ANNOUNCEMENT',
+  'SHAMELESS SELF-PROMOTION',
+  'TRENDING',
+  'MILESTONE',
+  'CHALLENGES',
+  'TOP PROJECTS',
 ];
 
 // ─── Mock Data ───────────────────────────────────────────────────────
@@ -280,6 +294,18 @@ const feedItems: FeedItem[] = [
     creatorPostContent: 'Hey makers! 👋 I just hit 1,000 backers on my robot arm project and I\'m celebrating with a live build stream this Saturday at 2PM EST. Come hang out, ask questions, and watch me inevitably drop a tiny screw into the void. Link in my profile!',
     comments: 89,
     hearts: 312,
+  },
+  {
+    id: '12',
+    type: 'creator_post',
+    timestamp: '4 hours ago',
+    creatorName: 'Priya Nair',
+    creatorAvatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
+    creatorId: 'priya',
+    creatorPostType: 'Announcement',
+    creatorPostContent: 'Almost there! 🏁 I\'ve been heads-down building a custom electronic device that displays live sports scores in real time — think minimal hardware, clean display, and zero lag. Just wrapping up final testing. Look forward to a new project next week!',
+    comments: 47,
+    hearts: 198,
   },
 ];
 
@@ -857,21 +883,47 @@ export function ExplorePage() {
   const [activeFilter, setActiveFilter] = useState<FeedFilter>('new');
   const [selectedCategory, setSelectedCategory] = useState('ALL CATEGORIES');
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [selectedPostType, setSelectedPostType] = useState('ALL POST TYPES');
+  const [postTypeFilterOpen, setPostTypeFilterOpen] = useState(false);
   const [composerText, setComposerText] = useState('');
   const [composerProject, setComposerProject] = useState('');
-  const [composerPostType, setComposerPostType] = useState<CreatorPostType>('Project Update');
+  const [composerPostType, setComposerPostType] = useState<CreatorPostType | null>(null);
+  const [composerImage, setComposerImage] = useState<File | null>(null);
   const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
   const [postTypeDropdownOpen, setPostTypeDropdownOpen] = useState(false);
 
   const currentFeed = activeFilter === 'new' ? feedItems : followingFeedItems;
 
-  const filteredFeed = selectedCategory === 'ALL CATEGORIES'
+  const postTypeToFeedType: Record<string, string[]> = {
+    'NEW PROJECT': ['new_project'],
+    'PROJECT UPDATE': ['updated_project', 'creator_post'],
+    'ANNOUNCEMENT': ['creator_post'],
+    'SHAMELESS SELF-PROMOTION': ['creator_post'],
+    'TRENDING': ['trending_project'],
+    'MILESTONE': ['milestone'],
+    'CHALLENGES': ['community_challenge'],
+    'TOP PROJECTS': ['weekly_roundup'],
+  };
+
+  const categoryFiltered = selectedCategory === 'ALL CATEGORIES'
     ? currentFeed
     : currentFeed.filter((item) => {
         if (item.projectCategory === selectedCategory) return true;
         if (item.creatorCategories?.includes(selectedCategory)) return true;
         if (item.type === 'milestone' || item.type === 'community_challenge' || item.type === 'weekly_roundup') return true;
         return false;
+      });
+
+  const filteredFeed = selectedPostType === 'ALL POST TYPES'
+    ? categoryFiltered
+    : categoryFiltered.filter((item) => {
+        const types = postTypeToFeedType[selectedPostType];
+        if (!types) return true;
+        if (!types.includes(item.type)) return false;
+        if (selectedPostType === 'ANNOUNCEMENT') return item.creatorPostType === 'Announcement';
+        if (selectedPostType === 'SHAMELESS SELF-PROMOTION') return item.creatorPostType === 'Shameless Self-Promotion';
+        if (selectedPostType === 'PROJECT UPDATE') return item.type === 'updated_project' || item.creatorPostType === 'Project Update';
+        return true;
       });
 
   return (
@@ -948,7 +1000,7 @@ export function ExplorePage() {
                   {/* Category Dropdown */}
                   <div className="relative">
                     <button
-                      onClick={() => setCategoryOpen(!categoryOpen)}
+                      onClick={() => { setCategoryOpen(!categoryOpen); setPostTypeFilterOpen(false); }}
                       className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] border transition-all ${
                         selectedCategory !== 'ALL CATEGORIES'
                           ? 'gradient-bg text-white border-transparent'
@@ -985,6 +1037,48 @@ export function ExplorePage() {
                       </motion.div>
                     )}
                   </AnimatePresence>
+                  </div>
+
+                  {/* Post Type Filter Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => { setPostTypeFilterOpen(!postTypeFilterOpen); setCategoryOpen(false); }}
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] border transition-all ${
+                        selectedPostType !== 'ALL POST TYPES'
+                          ? 'gradient-bg text-white border-transparent'
+                          : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:border-[#1782FF]/30'
+                      }`}
+                      style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
+                    >
+                      {selectedPostType}
+                      <CaretDown className={`h-3.5 w-3.5 transition-transform ${postTypeFilterOpen ? 'rotate-180' : ''}`} weight="bold" />
+                    </button>
+                    <AnimatePresence>
+                      {postTypeFilterOpen && (
+                        <motion.div
+                          className="absolute top-full left-0 mt-1 w-64 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden"
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          transition={{ duration: 0.15 }}
+                        >
+                          {postTypeFilters.map((pt) => (
+                            <button
+                              key={pt}
+                              onClick={() => { setSelectedPostType(pt); setPostTypeFilterOpen(false); }}
+                              className={`w-full text-left px-4 py-2.5 transition-colors ${
+                                selectedPostType === pt
+                                  ? 'bg-[#1782FF]/10 text-[#1782FF]'
+                                  : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'
+                              }`}
+                              style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.02em' }}
+                            >
+                              {pt}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </motion.div>
@@ -1054,13 +1148,27 @@ export function ExplorePage() {
                         Post to Feed
                       </h3>
                     </div>
-                    <textarea
-                      value={composerText}
-                      onChange={(e) => setComposerText(e.target.value)}
-                      placeholder="Share an update with the community..."
-                      className="w-full bg-white/20 dark:bg-white/5 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] p-3 text-[#212121] dark:text-white placeholder-[#212121]/30 dark:placeholder-white/30 resize-none focus:outline-none focus:border-[#1782FF]/50 transition-colors"
-                      style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.85rem', lineHeight: '1.5', minHeight: '80px' }}
-                    />
+                    <div className="relative">
+                      <textarea
+                        value={composerText}
+                        onChange={(e) => setComposerText(e.target.value)}
+                        placeholder="Share an update with the community..."
+                        className="w-full bg-white/20 dark:bg-white/5 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] p-3 pb-8 text-[#212121] dark:text-white placeholder-[#212121]/30 dark:placeholder-white/30 resize-none focus:outline-none focus:border-[#1782FF]/50 transition-colors"
+                        style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.85rem', lineHeight: '1.5', minHeight: '104px' }}
+                      />
+                      <label
+                        className="absolute bottom-2 right-2 cursor-pointer text-[#212121]/30 dark:text-white/30 hover:text-[#1782FF] transition-colors"
+                        title={composerImage ? composerImage.name : 'Attach image (GIF, JPG, PNG)'}
+                      >
+                        <Paperclip className={`h-4 w-4 ${composerImage ? 'text-[#1782FF]' : ''}`} weight="bold" />
+                        <input
+                          type="file"
+                          accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png"
+                          className="hidden"
+                          onChange={(e) => setComposerImage(e.target.files?.[0] ?? null)}
+                        />
+                      </label>
+                    </div>
 
                     {/* Project Dropdown */}
                     <div className="relative mt-3">
@@ -1069,7 +1177,7 @@ export function ExplorePage() {
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
                         style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                       >
-                        {composerProject || 'Select a project...'}
+                        {composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
                         <CaretDown className={`h-3 w-3 transition-transform ${projectDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
                       </button>
                       <AnimatePresence>
@@ -1107,7 +1215,7 @@ export function ExplorePage() {
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
                         style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                       >
-                        {composerPostType}
+                        {composerPostType || <span>Post Type <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Required)</span></span>}
                         <CaretDown className={`h-3 w-3 transition-transform ${postTypeDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
                       </button>
                       <AnimatePresence>
@@ -1119,7 +1227,7 @@ export function ExplorePage() {
                             exit={{ opacity: 0, y: -5 }}
                             transition={{ duration: 0.15 }}
                           >
-                            {(['Project Update', 'Announcement', 'Shameless Self-Promotion'] as CreatorPostType[]).map((pt) => (
+                            {(['New Project', 'Project Update', 'Announcement', 'Shameless Self-Promotion'] as CreatorPostType[]).map((pt) => (
                               <button
                                 key={pt}
                                 onClick={() => { setComposerPostType(pt); setPostTypeDropdownOpen(false); }}
@@ -1130,7 +1238,7 @@ export function ExplorePage() {
                                 }`}
                                 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                               >
-                                {pt === 'Shameless Self-Promotion' ? `😜 ${pt}` : pt === 'Announcement' ? `📣 ${pt}` : pt === 'Project Update' ? `🚀 ${pt}` : pt}
+                                {pt === 'New Project' ? `✨ ${pt}` : pt === 'Shameless Self-Promotion' ? `😜 ${pt}` : pt === 'Announcement' ? `📣 ${pt}` : pt === 'Project Update' ? `🚀 ${pt}` : pt}
                               </button>
                             ))}
                           </motion.div>
@@ -1142,7 +1250,7 @@ export function ExplorePage() {
                     <Button
                       className="w-full mt-3 text-white relative overflow-hidden group rounded-[2px]"
                       style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}
-                      disabled={!composerText.trim()}
+                      disabled={!composerText.trim() || !composerPostType}
                     >
                       <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }} />
                       <div className="absolute inset-0 bg-[#1782FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
