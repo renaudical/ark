@@ -30,7 +30,7 @@ import {
   Megaphone,
   PencilSimple,
   PaperPlaneTilt,
-  Paperclip,
+  Image,
 } from '@phosphor-icons/react';
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -968,49 +968,45 @@ export function ExplorePage() {
               >
                 {/* Tab Filters */}
                 <div className="flex flex-wrap items-center gap-2 sm:gap-[16px]">
-                  <button
-                    onClick={() => setActiveFilter('new')}
-                    className={`px-5 py-2.5 rounded-[2px] border transition-all ${
-                      activeFilter === 'new'
-                        ? 'gradient-bg text-white border-transparent'
-                        : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:bg-white/10'
-                    }`}
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
+                  <div
+                    className="rounded-[2px] transition-all"
+                    style={activeFilter === 'following' ? { padding: '1px', background: 'linear-gradient(90deg, #1782FF, #B02BED)' } : {}}
                   >
-                    <span className="flex items-center gap-1.5">
-                      <Rocket className="h-3.5 w-3.5" weight="fill" />
-                      NEW ON ARK
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setActiveFilter('following')}
-                    className={`px-5 py-2.5 rounded-[2px] border transition-all ${
-                      activeFilter === 'following'
-                        ? 'gradient-bg text-white border-transparent'
-                        : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:bg-white/10'
-                    }`}
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <Bell className="h-3.5 w-3.5" weight="fill" />
-                      FOLLOWING
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setActiveFilter('following')}
+                      className={`px-5 py-2.5 rounded-[2px] border transition-all ${
+                        activeFilter === 'following'
+                          ? 'border-transparent backdrop-blur-lg bg-white/30 dark:bg-black/40 text-white'
+                          : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:bg-white/10'
+                      }`}
+                      style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <Bell className="h-3.5 w-3.5" weight="fill" />
+                        FOLLOWING
+                      </span>
+                    </button>
+                  </div>
 
                   {/* Category Dropdown */}
                   <div className="relative">
+                    <div
+                      className="rounded-[2px] transition-all"
+                      style={selectedCategory !== 'ALL CATEGORIES' ? { padding: '1px', background: 'linear-gradient(90deg, #1782FF, #B02BED)' } : {}}
+                    >
                     <button
                       onClick={() => { setCategoryOpen(!categoryOpen); setPostTypeFilterOpen(false); }}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] border transition-all ${
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] transition-all ${
                         selectedCategory !== 'ALL CATEGORIES'
-                          ? 'gradient-bg text-white border-transparent'
-                          : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:border-[#1782FF]/30'
+                          ? 'border-transparent backdrop-blur-lg bg-white/30 dark:bg-black/40 text-white'
+                          : 'border border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:border-[#1782FF]/30'
                       }`}
                       style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
                     >
                       {selectedCategory}
                       <CaretDown className={`h-3.5 w-3.5 transition-transform ${categoryOpen ? 'rotate-180' : ''}`} weight="bold" />
                     </button>
+                    </div>
                     <AnimatePresence>
                     {categoryOpen && (
                       <motion.div
@@ -1041,18 +1037,23 @@ export function ExplorePage() {
 
                   {/* Post Type Filter Dropdown */}
                   <div className="relative">
+                    <div
+                      className="rounded-[2px] transition-all"
+                      style={selectedPostType !== 'ALL POST TYPES' ? { padding: '1px', background: 'linear-gradient(90deg, #1782FF, #B02BED)' } : {}}
+                    >
                     <button
                       onClick={() => { setPostTypeFilterOpen(!postTypeFilterOpen); setCategoryOpen(false); }}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] border transition-all ${
+                      className={`flex items-center gap-2 px-5 py-2.5 rounded-[2px] transition-all ${
                         selectedPostType !== 'ALL POST TYPES'
-                          ? 'gradient-bg text-white border-transparent'
-                          : 'border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:border-[#1782FF]/30'
+                          ? 'border-transparent backdrop-blur-lg bg-white/30 dark:bg-black/40 text-white'
+                          : 'border border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 hover:text-[#1246a8] dark:hover:text-white hover:border-[#1782FF]/30'
                       }`}
                       style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}
                     >
                       {selectedPostType}
                       <CaretDown className={`h-3.5 w-3.5 transition-transform ${postTypeFilterOpen ? 'rotate-180' : ''}`} weight="bold" />
                     </button>
+                    </div>
                     <AnimatePresence>
                       {postTypeFilterOpen && (
                         <motion.div
@@ -1154,13 +1155,13 @@ export function ExplorePage() {
                         onChange={(e) => setComposerText(e.target.value)}
                         placeholder="Share an update with the community..."
                         className="w-full bg-white/20 dark:bg-white/5 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] p-3 pb-8 text-[#212121] dark:text-white placeholder-[#212121]/30 dark:placeholder-white/30 resize-none focus:outline-none focus:border-[#1782FF]/50 transition-colors"
-                        style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.85rem', lineHeight: '1.5', minHeight: '104px' }}
+                        style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.85rem', lineHeight: '1.5', minHeight: '128px' }}
                       />
                       <label
-                        className="absolute bottom-2 right-2 cursor-pointer text-[#212121]/30 dark:text-white/30 hover:text-[#1782FF] transition-colors"
+                        className="absolute bottom-3 right-3 cursor-pointer text-[#212121]/30 dark:text-white/30 hover:text-[#1782FF] transition-colors"
                         title={composerImage ? composerImage.name : 'Attach image (GIF, JPG, PNG)'}
                       >
-                        <Paperclip className={`h-4 w-4 ${composerImage ? 'text-[#1782FF]' : ''}`} weight="bold" />
+                        <Image className={`h-4 w-4 ${composerImage ? 'text-[#1782FF]' : ''}`} weight="bold" />
                         <input
                           type="file"
                           accept=".gif,.jpg,.jpeg,.png,image/gif,image/jpeg,image/png"
