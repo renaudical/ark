@@ -11,6 +11,8 @@ import {
   DuplicateProjectPageWrapper,
   DraftProjectPageWrapper,
 } from './pages/CreateProjectPageWrapper';
+import { CreateProjectPage2Wrapper } from './pages/CreateProjectPage2Wrapper';
+import { ProjectDemoPage } from './pages/ProjectDemoPage';
 import { EditProfilePageWrapper } from './pages/EditProfilePageWrapper';
 import { ExplorePageWrapper } from './pages/ExplorePageWrapper';
 import { Layout } from './components/Layout';
@@ -58,6 +60,14 @@ export const router = createBrowserRouter([
       {
         path: '/create-project/draft/:id',
         Component: DraftProjectPageWrapper,
+      },
+      {
+        path: '/create-project-2',
+        Component: CreateProjectPage2Wrapper,
+      },
+      {
+        path: '/project-demo',
+        Component: ProjectDemoPage,
       },
       {
         path: '/edit-profile',
