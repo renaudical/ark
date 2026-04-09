@@ -38,6 +38,7 @@ import {
   Pause,
   SpeakerHigh,
   ArrowsOut,
+  ArrowsIn,
   Note,
   ListNumbers,
   X,
@@ -192,6 +193,8 @@ function SectionDetailedView({
   const [openIds, setOpenIds] = useState<Set<string>>(new Set());
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pseudoFs, setPseudoFs] = useState(false);
+  const isFs = isFullscreen || pseudoFs;
 
   const isVideo = step.image ? step.image.type.startsWith('video/') : /\.(mp4|mov|wmv)$/i.test(step.imageUrl ?? '');
   const mediaUrl = useMemo(() => step.image ? URL.createObjectURL(step.image) : (step.imageUrl ?? null), [step.image, step.imageUrl]);
@@ -202,12 +205,43 @@ function SectionDetailedView({
     setIsPlaying(!isPlaying);
   };
 
-  // Track fullscreen state
+  // Track real-fullscreen state (desktop / Android Chrome)
   useEffect(() => {
     const handler = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener('fullscreenchange', handler);
     return () => document.removeEventListener('fullscreenchange', handler);
   }, []);
+
+  // Lock body scroll while in pseudo-fullscreen (iOS fallback)
+  useEffect(() => {
+    if (!pseudoFs) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [pseudoFs]);
+
+  // ESC exits pseudo-fullscreen
+  useEffect(() => {
+    if (!pseudoFs) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setPseudoFs(false); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [pseudoFs]);
+
+  const enterFullscreen = () => {
+    const el = containerRef.current as (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> }) | null;
+    const req = el?.requestFullscreen ?? el?.webkitRequestFullscreen;
+    if (req) {
+      req.call(el).catch(() => setPseudoFs(true));
+    } else {
+      setPseudoFs(true);
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    setPseudoFs(false);
+  };
 
   // Auto-open / auto-close tooltips based on video time and dismissal state
   useEffect(() => {
@@ -302,8 +336,8 @@ function SectionDetailedView({
   return (
     <div
       ref={containerRef}
-      className={`rounded-[2px] overflow-hidden ${isFullscreen ? 'flex flex-col h-screen w-screen bg-black' : ''}`}
-      style={!isFullscreen ? { border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.4)' } : undefined}
+      className={`rounded-[2px] overflow-hidden ${isFs ? 'flex flex-col bg-black' : ''} ${isFullscreen ? 'h-screen w-screen' : ''} ${pseudoFs ? 'fixed inset-0 z-[9999] h-[100dvh] w-screen' : ''}`}
+      style={!isFs ? { border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.4)' } : undefined}
     >
       {/* Header */}
       <div
@@ -356,8 +390,8 @@ function SectionDetailedView({
       {/* Media area */}
       <div
         ref={mediaRef}
-        className={`relative bg-black select-none ${addMode ? 'cursor-crosshair' : 'cursor-default'} ${isFullscreen ? 'flex-1 flex items-center justify-center' : ''}`}
-        style={!isFullscreen ? { minHeight: '260px' } : undefined}
+        className={`relative bg-black select-none ${addMode ? 'cursor-crosshair' : 'cursor-default'} ${isFs ? 'flex-1 flex items-center justify-center' : ''}`}
+        style={!isFs ? { minHeight: '260px' } : undefined}
         onClick={handleMediaClick}
       >
         {isVideo ? (
@@ -367,13 +401,13 @@ function SectionDetailedView({
             playsInline
             // @ts-expect-error legacy iOS attribute
             webkit-playsinline="true"
-            className={`w-full object-contain pointer-events-none ${isFullscreen ? 'h-full max-h-full' : 'max-h-[448px]'}`}
+            className={`w-full object-contain pointer-events-none ${isFs ? 'h-full max-h-full' : 'max-h-[448px]'}`}
             onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime ?? 0)}
             onLoadedMetadata={() => setDuration(videoRef.current?.duration ?? 0)}
             onEnded={() => setIsPlaying(false)}
           />
         ) : mediaUrl ? (
-          <img src={mediaUrl} alt="Section media" className={`w-full object-contain pointer-events-none ${isFullscreen ? 'h-full max-h-full' : 'max-h-[448px]'}`} />
+          <img src={mediaUrl} alt="Section media" className={`w-full object-contain pointer-events-none ${isFs ? 'h-full max-h-full' : 'max-h-[448px]'}`} />
         ) : (
           <div className="flex items-center justify-center h-64 text-white/30" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}>
             No media uploaded
@@ -560,14 +594,19 @@ function SectionDetailedView({
               </div>
             </div>
             <div className="flex items-center justify-center px-5 h-[35px] w-[60px] rounded-[48px]" style={{ background: 'rgba(40,40,40,0.6)' }}>
-              <ArrowsOut
-                size={20}
-                className="text-white cursor-pointer hover:text-white/70"
-                onClick={() => {
-                  if (document.fullscreenElement) document.exitFullscreen?.();
-                  else containerRef.current?.requestFullscreen?.();
-                }}
-              />
+              {isFs ? (
+                <ArrowsIn
+                  size={20}
+                  className="text-white cursor-pointer hover:text-white/70"
+                  onClick={exitFullscreen}
+                />
+              ) : (
+                <ArrowsOut
+                  size={20}
+                  className="text-white cursor-pointer hover:text-white/70"
+                  onClick={enterFullscreen}
+                />
+              )}
             </div>
           </div>
         </div>
