@@ -364,6 +364,9 @@ function SectionDetailedView({
           <video
             ref={videoRef}
             src={mediaUrl ?? undefined}
+            playsInline
+            // @ts-expect-error legacy iOS attribute
+            webkit-playsinline="true"
             className={`w-full object-contain pointer-events-none ${isFullscreen ? 'h-full max-h-full' : 'max-h-[448px]'}`}
             onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime ?? 0)}
             onLoadedMetadata={() => setDuration(videoRef.current?.duration ?? 0)}
