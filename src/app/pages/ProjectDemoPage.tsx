@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router';
 import { ThemeInitializer } from '../components/ThemeInitializer';
@@ -220,6 +221,7 @@ function AnnotatedPlayer({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoStateRef = useRef<{ time: number; playing: boolean }>({ time: 0, playing: false });
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -228,6 +230,12 @@ function AnnotatedPlayer({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [pseudoFs, setPseudoFs] = useState(false);
   const isFs = isFullscreen || pseudoFs;
+
+  const captureVideoState = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    videoStateRef.current = { time: v.currentTime, playing: !v.paused };
+  };
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -256,29 +264,28 @@ function AnnotatedPlayer({
     return () => { document.body.style.overflow = prev; };
   }, [pseudoFs]);
 
-  // Move the container to document.body while in pseudo-fullscreen so
-  // position:fixed escapes any transformed motion.div ancestors.
+  // After portal toggle, restore captured video time + play state
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el || !pseudoFs) return;
-    const originalParent = el.parentElement;
-    const originalNextSibling = el.nextSibling;
-    document.body.appendChild(el);
-    return () => {
-      if (originalParent && originalParent.isConnected) {
-        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
-          originalParent.insertBefore(el, originalNextSibling);
-        } else {
-          originalParent.appendChild(el);
-        }
-      }
-    };
+    const v = videoRef.current;
+    if (!v) return;
+    const { time, playing } = videoStateRef.current;
+    if (time > 0) {
+      try { v.currentTime = time; } catch {}
+    }
+    if (playing) {
+      v.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    }
   }, [pseudoFs]);
 
   // ESC exits pseudo-fullscreen
   useEffect(() => {
     if (!pseudoFs) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setPseudoFs(false); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        captureVideoState();
+        setPseudoFs(false);
+      }
+    };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [pseudoFs]);
@@ -287,15 +294,22 @@ function AnnotatedPlayer({
     const el = containerRef.current as (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> }) | null;
     const req = el?.requestFullscreen ?? el?.webkitRequestFullscreen;
     if (req) {
-      req.call(el).catch(() => setPseudoFs(true));
+      req.call(el).catch(() => {
+        captureVideoState();
+        setPseudoFs(true);
+      });
     } else {
+      captureVideoState();
       setPseudoFs(true);
     }
   };
 
   const exitFullscreen = () => {
     if (document.fullscreenElement) document.exitFullscreen?.();
-    setPseudoFs(false);
+    if (pseudoFs) {
+      captureVideoState();
+      setPseudoFs(false);
+    }
   };
 
   // Auto-open tooltips when in range, auto-close when out of range, respect dismissals
@@ -335,7 +349,7 @@ function AnnotatedPlayer({
 
   const stepAnns = annotations.filter((a) => a.type === 'step');
 
-  return (
+  const playerContent = (
     <div
       ref={containerRef}
       className={`rounded-[2px] overflow-hidden ${isFs ? 'flex flex-col bg-black' : ''} ${isFullscreen ? 'h-screen w-screen' : ''} ${pseudoFs ? 'fixed inset-0 z-[9999] h-[100dvh] w-screen' : ''}`}
@@ -578,6 +592,8 @@ function AnnotatedPlayer({
       </div>
     </div>
   );
+
+  return pseudoFs ? createPortal(playerContent, document.body) : playerContent;
 }
 
 function StepsListExpandable({ annotations }: { annotations: DemoAnnotation[] }) {
