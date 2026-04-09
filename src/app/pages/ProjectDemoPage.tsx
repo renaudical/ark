@@ -256,6 +256,25 @@ function AnnotatedPlayer({
     return () => { document.body.style.overflow = prev; };
   }, [pseudoFs]);
 
+  // Move the container to document.body while in pseudo-fullscreen so
+  // position:fixed escapes any transformed motion.div ancestors.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !pseudoFs) return;
+    const originalParent = el.parentElement;
+    const originalNextSibling = el.nextSibling;
+    document.body.appendChild(el);
+    return () => {
+      if (originalParent && originalParent.isConnected) {
+        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
+          originalParent.insertBefore(el, originalNextSibling);
+        } else {
+          originalParent.appendChild(el);
+        }
+      }
+    };
+  }, [pseudoFs]);
+
   // ESC exits pseudo-fullscreen
   useEffect(() => {
     if (!pseudoFs) return;
