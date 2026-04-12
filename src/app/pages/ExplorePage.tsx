@@ -12,7 +12,6 @@ import { AnimatedBorderCard } from '../components/AnimatedBorderCard';
 import {
   TrendUp,
   ChatCircle,
-  Heart,
   Users,
   Star,
   CaretDown,
@@ -405,7 +404,7 @@ function EngagementBar({ comments, hearts, backers, views, difficulty, category 
       {difficulty && <DifficultyBadge difficulty={difficulty} />}
       {hearts !== undefined && (
         <span className="flex items-center gap-1 shrink-0">
-          <Heart className="h-3.5 w-3.5 shrink-0" weight="fill" /> {hearts.toLocaleString()}
+          <ThumbsUp className="h-3.5 w-3.5 shrink-0" weight="fill" /> {hearts.toLocaleString()}
         </span>
       )}
       {comments !== undefined && (
@@ -1001,7 +1000,7 @@ function SidebarProjectCard({ project }: { project: SidebarProject }) {
         </span>
       </div>
       <span className="flex items-center gap-0.5 text-[#212121]/40 dark:text-white/40 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
-        <Heart className="h-3 w-3" weight="fill" /> {project.hearts}
+        <ThumbsUp className="h-3 w-3" weight="fill" /> {project.hearts}
       </span>
     </Link>
   );
@@ -1621,7 +1620,7 @@ export function ExplorePage() {
                       {[
                         { label: 'PROJECTS', value: '10,247', icon: Rocket },
                         { label: 'CREATORS', value: '3,891', icon: Users },
-                        { label: 'BACKERS', value: '28,403', icon: Heart },
+                        { label: 'BACKERS', value: '28,403', icon: ThumbsUp },
                         { label: 'THIS WEEK', value: '+142', icon: TrendUp },
                       ].map((stat) => (
                         <div key={stat.label} className="text-center p-2.5 rounded-[2px] bg-white/20 dark:bg-white/5">

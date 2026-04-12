@@ -8,7 +8,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ProjectCard } from './ProjectCard';
 import { CategoryBadge } from './CategoryBadge';
 import { 
-  Heart, 
+  ThumbsUp,
   ChatCircle, 
   ShareNetwork, 
   Upload, 
@@ -360,7 +360,7 @@ export function ProjectDetailPage() {
                   className="flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
                   style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
                 >
-                  <Heart 
+                  <ThumbsUp
                     className={`h-4 w-4 transition-all ${isHearted ? 'fill-[#1782FF] text-[#1782FF]' : ''}`}
                   />
                   <span>{heartCount}</span>
@@ -406,7 +406,7 @@ export function ProjectDetailPage() {
                       />
                     </>
                   )}
-                  <Heart className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} />
+                  <ThumbsUp className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} />
                   <span className={!isFollowing ? 'relative z-10' : ''}>{isFollowing ? 'FOLLOWING' : 'FOLLOW PROJECT'}</span>
                 </Button>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
@@ -1042,7 +1042,7 @@ export function ProjectDetailPage() {
                   <div className="mt-4 pt-4 border-t border-border space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground flex items-center gap-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.6875rem', letterSpacing: '-0.02em' }}>
-                        <Heart className="h-3.5 w-3.5" weight="fill" />
+                        <ThumbsUp className="h-3.5 w-3.5" weight="fill" />
                         TOTAL LIKES
                       </span>
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', fontWeight: 700 }}>

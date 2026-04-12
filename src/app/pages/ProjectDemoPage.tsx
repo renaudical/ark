@@ -13,7 +13,7 @@ import { CategoryBadge } from '../components/CategoryBadge';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { ProjectCard } from '../components/ProjectCard';
 import {
-  Heart,
+  ThumbsUp,
   ChatCircle,
   ShareNetwork,
   Rocket,
@@ -797,7 +797,7 @@ export function ProjectDemoPage() {
                           className="flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
                           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
                         >
-                          <Heart className={`h-4 w-4 transition-all ${isHearted ? 'fill-[#1782FF] text-[#1782FF]' : ''}`} />
+                          <ThumbsUp className={`h-4 w-4 transition-all ${isHearted ? 'fill-[#1782FF] text-[#1782FF]' : ''}`} />
                           <span>{heartCount}</span>
                         </button>
                         <span className="text-muted-foreground">•</span>
@@ -836,7 +836,7 @@ export function ProjectDemoPage() {
                               <div className="absolute inset-0 bg-[#1782FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             </>
                           )}
-                          <Heart className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} />
+                          <ThumbsUp className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} />
                           <span className={!isFollowing ? 'relative z-10' : ''}>{isFollowing ? 'FOLLOWING' : 'FOLLOW PROJECT'}</span>
                         </Button>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">

@@ -8,7 +8,7 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import {
   Rocket,
-  Heart,
+  ThumbsUp,
   ChatCircle,
   ShareNetwork,
   UserPlus,
@@ -933,7 +933,7 @@ className="group-hover:scale-105 transition-transform duration-300"`}</CodeBlock
                   <div className="bg-white/40 dark:bg-black/20 backdrop-blur-lg border border-white/40 dark:border-white/10 rounded-[2px] p-8">
                     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-6">
                       {[
-                        { Icon: Heart, name: 'Heart' },
+                        { Icon: ThumbsUp, name: 'ThumbsUp' },
                         { Icon: ChatCircle, name: 'ChatCircle' },
                         { Icon: ShareNetwork, name: 'ShareNetwork' },
                         { Icon: UserPlus, name: 'UserPlus' },

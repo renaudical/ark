@@ -1,6 +1,7 @@
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Badge } from './ui/badge';
-import { Heart, MessageSquare, ChevronDown, Check } from 'lucide-react';
+import { MessageSquare, ChevronDown, Check } from 'lucide-react';
+import { ThumbsUp } from '@phosphor-icons/react';
 import { ProjectCard } from './ProjectCard';
 import { useState } from 'react';
 import { motion } from 'motion/react';
@@ -223,7 +224,7 @@ export function ProjectsPage() {
                         className="flex items-center gap-1.5 hover:text-[#1782FF] transition-colors"
                         style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem' }}
                       >
-                        <Heart 
+                        <ThumbsUp
                           size={16}
                           weight={isFeaturedHearted ? "fill" : "regular"}
                           className={isFeaturedHearted ? "text-[#1782FF]" : ""}
