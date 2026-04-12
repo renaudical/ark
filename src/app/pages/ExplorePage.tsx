@@ -17,7 +17,6 @@ import {
   Star,
   CaretDown,
   Lightning,
-  ArrowUp,
   Clock,
   Eye,
   BookmarkSimple,
@@ -34,6 +33,7 @@ import {
   Image,
   ThumbsUp,
   HandWaving,
+  Planet,
 } from '@phosphor-icons/react';
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -532,10 +532,15 @@ function NewProjectCard({ item }: { item: FeedItem }) {
 }
 
 function UpdatedProjectCard({ item }: { item: FeedItem }) {
+  const [liked, setLiked] = useState(false);
   return (
     <AnimatedBorderCard>
-      <div className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden" style={{ backgroundImage: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)' }}>
-        <ArrowUp className="h-6 w-6 text-white shrink-0" weight="bold" />
+      {/* Header bar */}
+      <div
+        className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden"
+        style={{ backgroundImage: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)' }}
+      >
+        <Planet className="h-6 w-6 text-white shrink-0" weight="fill" />
         <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           PROJECT UPDATED
         </span>
@@ -545,33 +550,60 @@ function UpdatedProjectCard({ item }: { item: FeedItem }) {
           </span>
         )}
         <div className="flex-1 min-w-0" />
-        <span className="text-white/75 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
-          {item.timestamp}
-        </span>
+        <button
+          onClick={() => setLiked(!liked)}
+          className={`flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
+        >
+          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> <span className="hidden sm:inline">LIKE</span>
+        </button>
+        <button
+          className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
+        >
+          <ChatCircle className="h-3.5 w-3.5" /> <span className="hidden sm:inline">COMMENT</span>
+        </button>
       </div>
 
-      <div className="p-4 sm:p-6 flex flex-col gap-3">
-        <EngagementBar comments={item.comments} hearts={item.hearts} backers={item.backers} views={item.views} category={item.projectCategory} />
-        <div className="flex gap-4">
-          <Link to={`/project/${item.projectId}`} className="shrink-0">
-            <div className="w-[80px] h-[80px] sm:w-[140px] sm:h-[100px] rounded-[2px] overflow-hidden">
-              <ImageWithFallback src={item.projectImage || ''} alt={item.projectTitle || ''} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-            </div>
-          </Link>
-          <div className="flex-1 min-w-0 flex flex-col gap-2">
-            <Link to={`/project/${item.projectId}`}>
-              <h3 className="text-[#212121] dark:text-white hover:text-[#1782FF] transition-colors" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1.125rem', fontWeight: 900, lineHeight: '1.45' }}>
-                {item.projectTitle}
-              </h3>
+      {/* Embedded project card */}
+      <div className="mx-4 sm:mx-6 my-4 bg-[rgba(13,14,36,0.9)] border border-white/20 rounded-[2px] overflow-hidden">
+        <div className="p-4 flex flex-col gap-4">
+          <EngagementBar
+            difficulty={item.projectDifficulty}
+            hearts={item.hearts}
+            comments={item.comments}
+            backers={item.backers}
+            views={item.views}
+            category={item.projectCategory}
+          />
+          <div className="flex gap-4">
+            <Link to={`/project/${item.projectId}`} className="shrink-0">
+              <div className="w-[80px] h-[80px] sm:w-[140px] sm:h-[100px] rounded-[2px] overflow-hidden">
+                <ImageWithFallback
+                  src={item.projectImage || ''}
+                  alt={item.projectTitle || ''}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
             </Link>
-            <p className="text-[#717182] dark:text-[#BEBEC8]" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.6' }}>
-              {item.versionNote}
-            </p>
+            <div className="flex-1 min-w-0 flex flex-col gap-2">
+              <Link to={`/project/${item.projectId}`}>
+                <h3
+                  className="text-[#212121] dark:text-white hover:text-[#1782FF] transition-colors"
+                  style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1.125rem', fontWeight: 900, lineHeight: '1.5' }}
+                >
+                  {item.projectTitle}
+                </h3>
+              </Link>
+              <p className="text-[#717182] dark:text-white/70 line-clamp-3" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.5' }}>
+                {item.versionNote || item.projectDescription}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <FeedCardActions item={item} />
+        <FeedCardActions item={item} />
+      </div>
     </AnimatedBorderCard>
   );
 }
@@ -750,14 +782,15 @@ function WeeklyRoundupCard({ item }: { item: FeedItem }) {
 function CreatorPostCard({ item }: { item: FeedItem }) {
   const postType = item.creatorPostType || 'New Project';
 
-  const headerConfig: Record<CreatorPostType, { gradient: string; icon: React.ReactNode }> = {
+  const headerConfig: Record<CreatorPostType, { gradient: string; icon: React.ReactNode; label?: string }> = {
     'New Project': {
       gradient: 'linear-gradient(30deg, rgb(52, 168, 83) 0%, rgb(0, 101, 27) 100%)',
       icon: <Rocket className="h-6 w-6 text-white shrink-0" weight="fill" />,
     },
     'Project Update': {
       gradient: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)',
-      icon: <Fire className="h-6 w-6 text-white shrink-0" weight="fill" />,
+      icon: <Planet className="h-6 w-6 text-white shrink-0" weight="fill" />,
+      label: 'PROJECT UPDATED',
     },
     'Announcement': {
       gradient: 'linear-gradient(30deg, rgb(255, 105, 0) 0%, rgb(193, 140, 1) 100%)',
@@ -781,7 +814,7 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
       >
         <div className="shrink-0">{config.icon}</div>
         <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-          {postType.toUpperCase()}
+          {config.label || postType.toUpperCase()}
         </span>
         {postType === 'Project Update' && item.version && (
           <span
