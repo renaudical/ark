@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CaretRight, CaretDown } from '@phosphor-icons/react';
+import { CaretRight, CaretDown, ThumbsUp } from '@phosphor-icons/react';
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { AnimatedBorderCard } from './AnimatedBorderCard';
@@ -50,9 +50,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
               <div className="flex items-center gap-6">
                 {/* Likes */}
                 <div className="flex items-center gap-1">
-                  <svg className="size-4" fill="none" viewBox="0 0 16 16">
-                    <path d={svgPaths.p13a22680} fill="#1782FF" />
-                  </svg>
+                  <ThumbsUp className="size-4 text-[#1782FF]" weight="fill" />
                   <span className="font-['IBM_Plex_Mono',monospace] text-xs text-[#717182] dark:text-[#bebec8] tracking-[-0.12px]">
                     {creator.likes}
                   </span>

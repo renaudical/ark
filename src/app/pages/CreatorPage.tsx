@@ -48,7 +48,7 @@ const creatorProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1570155308259-f4480a5c3696?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800',
     difficulty: 'ADVANCED',
-    rating: 4.9,
+    hearts: 489,
     comments: 234,
     supporters: 487
   },
@@ -58,7 +58,7 @@ const creatorProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800',
     difficulty: 'ADVANCED',
-    rating: 4.8,
+    hearts: 512,
     comments: 278,
     supporters: 392
   },
@@ -68,7 +68,7 @@ const creatorProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800',
     difficulty: 'ADVANCED',
-    rating: 4.6,
+    hearts: 298,
     comments: 167,
     supporters: 314
   }
@@ -265,26 +265,11 @@ export function CreatorPage() {
                               </span>
                             </div>
                             
-                            {/* Rating */}
+                            {/* Likes */}
                             <div className="flex items-center gap-1 pr-2 border-r border-[rgba(190,190,200,0.25)]">
-                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <g clipPath="url(#clip0_star)">
-                                  <path 
-                                    d={cardSvgPaths.p295e8380} 
-                                    fill="#E4002B" 
-                                    stroke="#E4002B" 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                  />
-                                </g>
-                                <defs>
-                                  <clipPath id="clip0_star">
-                                    <rect fill="white" height="12" width="12" />
-                                  </clipPath>
-                                </defs>
-                              </svg>
+                              <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" weight="fill" />
                               <span className="font-['IBM_Plex_Mono',monospace] text-xs tracking-[0.24px] text-[#717182] dark:text-[#BEBEC8]">
-                                {project.rating}
+                                {project.hearts}
                               </span>
                             </div>
 

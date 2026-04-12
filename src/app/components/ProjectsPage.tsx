@@ -39,7 +39,7 @@ const allProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1558137623-ce933996c730?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXklMjByb2JvdCUyMGFyZHVpbm98ZW58MXx8fHwxNzcyOTc5MjcwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'BEGINNER',
-    rating: 4.9,
+    hearts: 489,
     comments: 234,
     author: 'MIKE JOHNSON'
   },
@@ -50,7 +50,7 @@ const allProjects = [
     category: '3D PRINTING',
     image: 'https://images.unsplash.com/photo-1642969164999-979483e21601?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHwzZCUyMHByaW50ZXIlMjBwcmludGluZ3xlbnwxfHx8fDE3NzI5NjA4NDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'INTERMEDIATE',
-    rating: 4.7,
+    hearts: 347,
     comments: 189,
     author: 'ALEX RIVERA'
   },
@@ -61,7 +61,7 @@ const allProjects = [
     category: 'RASPBERRY PI',
     image: 'https://images.unsplash.com/photo-1675339424025-35bb39fd7b9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyYXNwYmVycnklMjBwaSUyMGVsZWN0cm9uaWNzfGVufDF8fHx8MTc3Mjk3OTEwMXww&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'INTERMEDIATE',
-    rating: 4.8,
+    hearts: 512,
     comments: 312,
     author: 'MARCUS WONG'
   },
@@ -72,7 +72,7 @@ const allProjects = [
     category: 'CODING',
     image: 'https://images.unsplash.com/photo-1603351130949-476794ec3dff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2RpbmclMjBwcm9ncmFtbWluZyUyMHNjcmVlbnxlbnwxfHx8fDE3NzI5NjM4NDl8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'ADVANCED',
-    rating: 4.6,
+    hearts: 298,
     comments: 156,
     author: 'JENNY PARK'
   },
@@ -83,7 +83,7 @@ const allProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1518314916381-77a37c2a49ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyb2JvdCUyMHdoZWVsc3xlbnwxfHx8fDE3NzI5NzkzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'ADVANCED',
-    rating: 4.8,
+    hearts: 456,
     comments: 278,
     author: 'DAVID LEE'
   },
@@ -94,7 +94,7 @@ const allProjects = [
     category: '3D PRINTING',
     image: 'https://images.unsplash.com/photo-1634128221889-82ed6efebfc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHwzZCUyMHByaW50JTIwcHJvc3RoZXRpY3xlbnwxfHx8fDE3NzI5NzkzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'INTERMEDIATE',
-    rating: 4.9,
+    hearts: 623,
     comments: 412,
     author: 'SARAH MARTINEZ'
   },
@@ -105,7 +105,7 @@ const allProjects = [
     category: 'RASPBERRY PI',
     image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXRybyUyMGdhbWluZyUyMGFyY2FkZXxlbnwxfHx8fDE3NzI5NzkzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'BEGINNER',
-    rating: 4.7,
+    hearts: 381,
     comments: 294,
     author: 'CHRIS THOMPSON'
   },
@@ -116,7 +116,7 @@ const allProjects = [
     category: 'CODING',
     image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWNoaW5lJTIwbGVhcm5pbmclMjBjb2RlfGVufDF8fHx8MTc3Mjk3OTMwMHww&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'ADVANCED',
-    rating: 4.5,
+    hearts: 267,
     comments: 203,
     author: 'PRIYA PATEL'
   },
@@ -127,7 +127,7 @@ const allProjects = [
     category: 'ROBOTICS',
     image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyb2JvdCUyMHNwaWRlcnxlbnwxfHx8fDE3NzI5NzkzMDB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'ADVANCED',
-    rating: 4.6,
+    hearts: 334,
     comments: 167,
     author: 'MIKE JOHNSON'
   },
@@ -138,7 +138,7 @@ const allProjects = [
     category: '3D PRINTING',
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHwzZCUyMHByaW50JTIwb3JnYW5pemVyfGVufDF8fHx8MTc3Mjk3OTMwMHww&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'BEGINNER',
-    rating: 4.4,
+    hearts: 198,
     comments: 145,
     author: 'ALEX RIVERA'
   },
@@ -149,7 +149,7 @@ const allProjects = [
     category: 'RASPBERRY PI',
     image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuZXR3b3JrJTIwc2VydmVyfGVufDF8fHx8MTc3Mjk3OTMwMHww&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'BEGINNER',
-    rating: 4.8,
+    hearts: 478,
     comments: 321,
     author: 'MARCUS WONG'
   },
@@ -160,7 +160,7 @@ const allProjects = [
     category: 'CODING',
     image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2RpbmclMjBhcGl8ZW58MXx8fHwxNzcyOTc5MzAwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     difficulty: 'INTERMEDIATE',
-    rating: 4.3,
+    hearts: 215,
     comments: 187,
     author: 'JENNY PARK'
   },

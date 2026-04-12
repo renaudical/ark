@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import cardSvgPaths from '../../imports/svg-64kd7g2p36';
 import { CategoryBadge } from './CategoryBadge';
+import { ThumbsUp } from '@phosphor-icons/react';
 
 interface ProjectCardProps {
   id?: string;
@@ -38,8 +39,7 @@ export function ProjectCard({
   index = 0,
   disableAnimation = false,
 }: ProjectCardProps) {
-  // Use rating if provided, otherwise calculate from hearts
-  const displayRating = rating || (hearts ? Math.min(5, Number((hearts / 250).toFixed(1))) : 4.5);
+  const displayLikes = hearts || 0;
   const displayCreator = author || creator || 'UNKNOWN';
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -126,26 +126,11 @@ export function ProjectCard({
                 </span>
               </div>
               
-              {/* Rating */}
+              {/* Likes */}
               <div className="flex items-center gap-1 pr-2 border-r border-[rgba(190,190,200,0.25)]">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <g clipPath="url(#clip0_star)">
-                    <path 
-                      d={cardSvgPaths.p295e8380} 
-                      fill="#E4002B" 
-                      stroke="#E4002B" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_star">
-                      <rect fill="white" height="12" width="12" />
-                    </clipPath>
-                  </defs>
-                </svg>
+                <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" weight="fill" />
                 <span className="font-['IBM_Plex_Mono',monospace] text-xs tracking-[0.24px] text-[#717182] dark:text-[#BEBEC8]">
-                  {displayRating}
+                  {displayLikes}
                 </span>
               </div>
 
