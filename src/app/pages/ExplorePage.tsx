@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import coffeeMakerImg from '@/assets/3d_coffee.webp';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router';
 import { NewHeader } from '../components/NewHeader';
@@ -31,6 +32,8 @@ import {
   PencilSimple,
   PaperPlaneTilt,
   Image,
+  ThumbsUp,
+  HandWaving,
 } from '@phosphor-icons/react';
 
 // ─── Types ───────────────────────────────────────────────────────────
@@ -80,6 +83,7 @@ interface FeedItem {
   // Creator post
   creatorPostType?: CreatorPostType;
   creatorPostContent?: string;
+  creatorPostImage?: string;
 }
 
 interface SidebarCreator {
@@ -128,24 +132,6 @@ const postTypeFilters = [
 // ─── Mock Data ───────────────────────────────────────────────────────
 const feedItems: FeedItem[] = [
   {
-    id: '1',
-    type: 'new_project',
-    timestamp: '2 hours ago',
-    projectTitle: '6-DOF Robot Arm with Computer Vision',
-    projectImage: 'https://images.unsplash.com/photo-1768323102290-3b6ad7d1c5b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
-    projectCategory: 'ROBOTICS',
-    projectDescription: 'Build a fully articulated 6-degree-of-freedom robot arm with integrated camera and OpenCV object tracking. Includes 3D printed parts, Arduino control, and Python vision pipeline.',
-    projectDifficulty: 'ADVANCED',
-    projectId: '101',
-    creatorName: 'Marcus Wong',
-    creatorAvatar: 'https://images.unsplash.com/photo-1752859951149-7d3fc700a7ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
-    creatorId: 'marcus',
-    comments: 47,
-    hearts: 182,
-    backers: 34,
-    views: 1203,
-  },
-  {
     id: '10',
     type: 'creator_post',
     timestamp: '3 hours ago',
@@ -153,11 +139,18 @@ const feedItems: FeedItem[] = [
     creatorAvatar: 'https://images.unsplash.com/photo-1712174766230-cb7304feaafe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
     creatorId: 'sarah',
     projectTitle: '3D Printed Planetary Gear Train',
+    projectImage: 'https://images.unsplash.com/photo-1739515054273-a2956b1e094a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
+    projectCategory: '3D PRINTING',
+    projectDescription: 'Design and 3D print a fully functional planetary gear train with customizable ratios. Includes parametric OpenSCAD files and FDM-optimized tolerances.',
+    projectDifficulty: 'INTERMEDIATE',
     projectId: '108',
     creatorPostType: 'Project Update',
+    version: 'v3.0',
     creatorPostContent: 'Just finished a major revision to the gear tolerances — prints are now buttery smooth on any FDM printer down to 0.2mm layer height. Also added a parametric OpenSCAD version so you can customize the gear ratios. Check it out!',
     comments: 34,
     hearts: 156,
+    backers: 22,
+    views: 890,
   },
   {
     id: '2',
@@ -204,24 +197,6 @@ const feedItems: FeedItem[] = [
     hearts: 445,
     backers: 78,
     views: 3210,
-  },
-  {
-    id: '5',
-    type: 'new_project',
-    timestamp: '10 hours ago',
-    projectTitle: 'DIY FPV Racing Drone Build',
-    projectImage: 'https://images.unsplash.com/photo-1761583780469-2f206ec7b270?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
-    projectCategory: 'DRONES',
-    projectDescription: 'Complete guide to building a 5" FPV racing quad from component selection to first flight, including Betaflight tuning and freestyle flying tips.',
-    projectDifficulty: 'ADVANCED',
-    projectId: '104',
-    creatorName: 'Dr. Elena Vasquez',
-    creatorAvatar: 'https://images.unsplash.com/photo-1756588534346-e8899364757b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
-    creatorId: 'elena',
-    comments: 28,
-    hearts: 94,
-    backers: 12,
-    views: 567,
   },
   {
     id: '6',
@@ -289,11 +264,17 @@ const feedItems: FeedItem[] = [
     creatorAvatar: 'https://images.unsplash.com/photo-1752859951149-7d3fc700a7ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
     creatorId: 'marcus',
     projectTitle: '6-DOF Robot Arm with Computer Vision',
+    projectImage: 'https://images.unsplash.com/photo-1768323102290-3b6ad7d1c5b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080',
+    projectCategory: 'ROBOTICS',
+    projectDescription: 'Build a fully articulated 6-degree-of-freedom robot arm with integrated camera and OpenCV object tracking. Includes 3D printed parts, Arduino control, and Python vision pipeline.',
+    projectDifficulty: 'ADVANCED',
     projectId: '101',
     creatorPostType: 'Shameless Self-Promotion',
-    creatorPostContent: 'Hey makers! 👋 I just hit 1,000 backers on my robot arm project and I\'m celebrating with a live build stream this Saturday at 2PM EST. Come hang out, ask questions, and watch me inevitably drop a tiny screw into the void. Link in my profile!',
+    creatorPostContent: 'Hey makers! \u{1F44B} I just hit 1,000 backers on my robot arm project and I\'m celebrating with a live build stream this Saturday at 2PM EST. Come hang out, ask questions, and watch me inevitably drop a tiny screw into the void. Link in my profile!',
     comments: 89,
     hearts: 312,
+    backers: 1000,
+    views: 5430,
   },
   {
     id: '12',
@@ -302,18 +283,32 @@ const feedItems: FeedItem[] = [
     creatorName: 'Priya Nair',
     creatorAvatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
     creatorId: 'priya',
+    projectCategory: 'ELECTRONICS',
     creatorPostType: 'Announcement',
-    creatorPostContent: 'Almost there! 🏁 I\'ve been heads-down building a custom electronic device that displays live sports scores in real time — think minimal hardware, clean display, and zero lag. Just wrapping up final testing. Look forward to a new project next week!',
+    creatorPostContent: 'Almost there! \u{1F3C1} I\'ve been heads-down building a custom electronic device that displays live sports scores in real time \u2014 think minimal hardware, clean display, and zero lag. Just wrapping up final testing. Look forward to a new project next week!',
     comments: 47,
     hearts: 198,
+  },
+  {
+    id: '13',
+    type: 'creator_post',
+    timestamp: '13 hours ago',
+    creatorName: 'Jayden Phillips',
+    creatorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400',
+    creatorId: 'jayden',
+    projectCategory: '3D PRINTING',
+    creatorPostType: 'New Project',
+    creatorPostImage: coffeeMakerImg,
+    creatorPostContent: 'After months of designing, iterating, and refining, I\'m thrilled to share that my 3D printed coffee maker is officially in its final prototype stage! What started as a passion project has come a long way \u2014 from early sketches to a fully functional machine that actually brews a great cup. We\'re just two weeks away from launch, and I honestly couldn\'t be more excited to share the final product with everyone. Stay tuned \u2014 the best is almost here! \u2615 \uD83D\uDE80',
+    comments: 62,
+    hearts: 245,
   },
 ];
 
 // Following feed
 const followingFeedItems: FeedItem[] = [
   feedItems[3], // updated project from Alex
-  feedItems[5], // new project from Elena
-  feedItems[8], // updated project from Jenny
+  feedItems[6], // updated project from Jenny
   {
     id: 'f1',
     type: 'new_project',
@@ -406,7 +401,7 @@ function DifficultyBadge({ difficulty }: { difficulty: string }) {
 
 function EngagementBar({ comments, hearts, backers, views, difficulty, category }: { comments?: number; hearts?: number; backers?: number; views?: number; difficulty?: string; category?: string }) {
   return (
-    <div className="flex flex-wrap items-center gap-4 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
+    <div className="flex items-center gap-4 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
       {difficulty && <DifficultyBadge difficulty={difficulty} />}
       {hearts !== undefined && (
         <span className="flex items-center gap-1">
@@ -429,7 +424,10 @@ function EngagementBar({ comments, hearts, backers, views, difficulty, category 
         </span>
       )}
       {category && (
-        <CategoryBadge category={category} />
+        <>
+          <div className="flex-1" />
+          <CategoryBadge category={category} />
+        </>
       )}
     </div>
   );
@@ -744,58 +742,151 @@ function WeeklyRoundupCard({ item }: { item: FeedItem }) {
 }
 
 function CreatorPostCard({ item }: { item: FeedItem }) {
-  const postTypeLabel = item.creatorPostType?.toUpperCase() || 'POST';
-  return (
-    <AnimatedBorderCard
-    >
-      <div className="absolute top-[1px] left-[1px] right-[1px] h-[2px]" style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }} />
-      <div className="p-6 flex flex-col gap-3">
-        {/* Header row: avatar + post type + timestamp */}
-        <div className="flex items-center gap-4">
-          <Link to={`/creator/${item.creatorId}`} className="shrink-0">
-            <ImageWithFallback
-              src={item.creatorAvatar || ''}
-              alt={item.creatorName || ''}
-              className="w-10 h-10 rounded-full object-cover"
-            />
-          </Link>
-          <div className="flex flex-col gap-0.5">
-            <span className="gradient-text" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em', fontWeight: 600 }}>
-              {postTypeLabel}: {item.creatorName}
-            </span>
-            <span className="text-[#717182] dark:text-white/40 sm:hidden" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
-              {item.timestamp}
-            </span>
-          </div>
-          <span className="text-[#717182] dark:text-white/40 ml-auto shrink-0 hidden sm:inline" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
-            {item.timestamp}
-          </span>
-        </div>
+  const postType = item.creatorPostType || 'New Project';
 
-        {/* Content: full width below avatar on mobile */}
-        {item.projectTitle && (
-          <Link to={`/project/${item.projectId}`}>
-            <h3 className="text-[#212121] dark:text-white hover:text-[#1782FF] transition-colors" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1.125rem', fontWeight: 900, lineHeight: '1.45' }}>
-              {item.projectTitle}
-            </h3>
-          </Link>
+  const headerConfig: Record<CreatorPostType, { gradient: string; icon: React.ReactNode }> = {
+    'New Project': {
+      gradient: 'linear-gradient(30deg, rgb(52, 168, 83) 0%, rgb(0, 101, 27) 100%)',
+      icon: <Rocket className="h-6 w-6 text-white shrink-0" weight="fill" />,
+    },
+    'Project Update': {
+      gradient: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)',
+      icon: <Fire className="h-6 w-6 text-white shrink-0" weight="fill" />,
+    },
+    'Announcement': {
+      gradient: 'linear-gradient(30deg, rgb(255, 105, 0) 0%, rgb(193, 140, 1) 100%)',
+      icon: <Megaphone className="h-6 w-6 text-white shrink-0" weight="fill" />,
+    },
+    'Shameless Self-Promotion': {
+      gradient: 'linear-gradient(30deg, #1782FF 0%, #B02BED 50%, rgb(255, 105, 0) 100%)',
+      icon: <HandWaving className="h-6 w-6 text-white shrink-0" weight="fill" />,
+    },
+  };
+
+  const config = headerConfig[postType];
+  const [liked, setLiked] = useState(false);
+
+  return (
+    <AnimatedBorderCard>
+      {/* Header bar */}
+      <div
+        className="flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px]"
+        style={{ backgroundImage: config.gradient }}
+      >
+        {config.icon}
+        <span className="text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
+          {postType.toUpperCase()}
+        </span>
+        {postType === 'Project Update' && item.version && (
+          <span
+            className="px-2 py-1 rounded-[2px] bg-white/10 border border-white/40 text-white"
+            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}
+          >
+            {item.version}
+          </span>
         )}
-        <p className="text-[#717182] dark:text-[#BEBEC8]" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.6' }}>
+        <div className="flex-1" />
+        <button
+          onClick={() => setLiked(!liked)}
+          className={`flex items-center gap-2 px-2 py-1.5 rounded-[2px] transition-all ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
+        >
+          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> LIKE
+        </button>
+        <button
+          className="flex items-center gap-2 px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all"
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
+        >
+          <ChatCircle className="h-3.5 w-3.5" /> COMMENT
+        </button>
+      </div>
+
+      {/* Uploaded image (no linked project) */}
+      {!item.projectTitle && item.creatorPostImage && (
+        <div className="w-full overflow-hidden">
+          <ImageWithFallback
+            src={item.creatorPostImage}
+            alt=""
+            className="w-full object-cover"
+          />
+        </div>
+      )}
+
+      {/* Message body */}
+      <div className="px-4 sm:px-6 pt-4 pb-4">
+        <p className="text-[#717182] dark:text-white/70" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.5' }}>
           {item.creatorPostContent}
         </p>
-        <div className="flex items-center gap-4 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
-          {item.hearts !== undefined && (
-            <span className="flex items-center gap-1">
-              <Heart className="h-3.5 w-3.5" weight="fill" /> {item.hearts.toLocaleString()}
-            </span>
-          )}
-          {item.comments !== undefined && (
-            <span className="flex items-center gap-1">
-              <ChatCircle className="h-3.5 w-3.5" weight="fill" /> {item.comments.toLocaleString()}
-            </span>
-          )}
-        </div>
       </div>
+
+      {/* Divider */}
+      <div className="h-px bg-white/20 mx-0" />
+
+      {/* Embedded project card */}
+      {item.projectTitle && (
+        <div className="mx-4 sm:mx-6 my-4 bg-[rgba(13,14,36,0.9)] border border-white/20 rounded-[2px] overflow-hidden">
+          <div className="p-4 flex flex-col gap-4">
+            <EngagementBar
+              difficulty={item.projectDifficulty}
+              hearts={item.hearts}
+              comments={item.comments}
+              backers={item.backers}
+              views={item.views}
+              category={item.projectCategory}
+            />
+            <div className="flex gap-4">
+              <Link to={`/project/${item.projectId}`} className="shrink-0">
+                <div className="w-[80px] h-[80px] sm:w-[140px] sm:h-[100px] rounded-[2px] overflow-hidden">
+                  <ImageWithFallback
+                    src={item.projectImage || ''}
+                    alt={item.projectTitle}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </Link>
+              <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <Link to={`/project/${item.projectId}`}>
+                  <h3
+                    className="text-[#212121] dark:text-white hover:text-[#1782FF] transition-colors"
+                    style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1.125rem', fontWeight: 900, lineHeight: '1.5' }}
+                  >
+                    {item.projectTitle}
+                  </h3>
+                </Link>
+                <p className="text-[#717182] dark:text-white/70 line-clamp-3" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.5' }}>
+                  {item.projectDescription}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer actions */}
+          <FeedCardActions item={item} />
+        </div>
+      )}
+
+      {/* Simplified footer for posts without a linked project */}
+      {!item.projectTitle && (
+        <div className="flex items-center gap-3 px-4 sm:px-6 py-2 border-t border-white/5">
+          {item.creatorAvatar && (
+            <Link to={`/creator/${item.creatorId}`}>
+              <ImageWithFallback src={item.creatorAvatar} alt={item.creatorName || ''} className="w-7 h-7 rounded-full object-cover" />
+            </Link>
+          )}
+          {item.creatorName && (
+            <Link to={`/creator/${item.creatorId}`} className="hover:text-[#1782FF] transition-colors">
+              <span className="text-[#212121] dark:text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}>
+                {item.creatorName}
+              </span>
+            </Link>
+          )}
+          <span className="text-[#717182] dark:text-white/40" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+            {item.timestamp}
+          </span>
+          <div className="flex-1" />
+          {item.projectCategory && <CategoryBadge category={item.projectCategory} />}
+        </div>
+      )}
     </AnimatedBorderCard>
   );
 }
@@ -888,15 +979,33 @@ export function ExplorePage() {
   const [composerText, setComposerText] = useState('');
   const [composerProject, setComposerProject] = useState('');
   const [composerPostType, setComposerPostType] = useState<CreatorPostType | null>(null);
+  const [composerCategory, setComposerCategory] = useState('');
   const [composerImage, setComposerImage] = useState<File | null>(null);
   const [mobileComposerOpen, setMobileComposerOpen] = useState(false);
   const [projectDropdownOpen, setProjectDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [postTypeDropdownOpen, setPostTypeDropdownOpen] = useState(false);
+
+  const projectCategoryMap: Record<string, string> = {
+    'Custom Mechanical Keyboard from Scratch': 'ELECTRONICS',
+    'Raspberry Pi Weather Station Network': 'RASPBERRY PI',
+    '3D Printed Planetary Gear Train': '3D PRINTING',
+  };
+
+  const composerCategories = categories.filter(c => c !== 'ALL CATEGORIES');
+
+  const handleSelectProject = (proj: string) => {
+    setComposerProject(proj);
+    setProjectDropdownOpen(false);
+    if (projectCategoryMap[proj]) {
+      setComposerCategory(projectCategoryMap[proj]);
+    }
+  };
 
   const currentFeed = activeFilter === 'new' ? feedItems : followingFeedItems;
 
   const postTypeToFeedType: Record<string, string[]> = {
-    'NEW PROJECT': ['new_project'],
+    'NEW PROJECT': ['new_project', 'creator_post'],
     'PROJECT UPDATE': ['updated_project', 'creator_post'],
     'ANNOUNCEMENT': ['creator_post'],
     'SHAMELESS SELF-PROMOTION': ['creator_post'],
@@ -921,6 +1030,7 @@ export function ExplorePage() {
         const types = postTypeToFeedType[selectedPostType];
         if (!types) return true;
         if (!types.includes(item.type)) return false;
+        if (selectedPostType === 'NEW PROJECT') return item.type === 'new_project' || item.creatorPostType === 'New Project';
         if (selectedPostType === 'ANNOUNCEMENT') return item.creatorPostType === 'Announcement';
         if (selectedPostType === 'SHAMELESS SELF-PROMOTION') return item.creatorPostType === 'Shameless Self-Promotion';
         if (selectedPostType === 'PROJECT UPDATE') return item.type === 'updated_project' || item.creatorPostType === 'Project Update';
@@ -1001,18 +1111,18 @@ export function ExplorePage() {
                         </div>
                         <div className="relative mt-3">
                           <button
-                            onClick={() => { setProjectDropdownOpen(!projectDropdownOpen); setPostTypeDropdownOpen(false); }}
-                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                            onClick={() => { setProjectDropdownOpen(!projectDropdownOpen); setCategoryDropdownOpen(false); setPostTypeDropdownOpen(false); }}
+                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors text-left"
                             style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                           >
-                            {composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
+                            <span className="flex-1">{composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}</span>
                             <CaretDown className={`h-3 w-3 transition-transform ${projectDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
                           </button>
                           <AnimatePresence>
                             {projectDropdownOpen && (
                               <motion.div className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.15 }}>
-                                {['6-DOF Robot Arm with Computer Vision', 'Custom Mechanical Keyboard from Scratch', 'Raspberry Pi Weather Station Network', 'DIY FPV Racing Drone Build', '3D Printed Planetary Gear Train'].map((proj) => (
-                                  <button key={proj} onClick={() => { setComposerProject(proj); setProjectDropdownOpen(false); }} className={`w-full text-left px-3 py-2.5 transition-colors ${composerProject === proj ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>{proj}</button>
+                                {['Custom Mechanical Keyboard from Scratch', 'Raspberry Pi Weather Station Network', '3D Printed Planetary Gear Train'].map((proj) => (
+                                  <button key={proj} onClick={() => handleSelectProject(proj)} className={`w-full text-left px-3 py-2.5 transition-colors ${composerProject === proj ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>{proj}</button>
                                 ))}
                               </motion.div>
                             )}
@@ -1020,7 +1130,26 @@ export function ExplorePage() {
                         </div>
                         <div className="relative mt-3">
                           <button
-                            onClick={() => { setPostTypeDropdownOpen(!postTypeDropdownOpen); setProjectDropdownOpen(false); }}
+                            onClick={() => { setCategoryDropdownOpen(!categoryDropdownOpen); setProjectDropdownOpen(false); setPostTypeDropdownOpen(false); }}
+                            className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
+                          >
+                            {composerCategory || <span>Category <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
+                            <CaretDown className={`h-3 w-3 transition-transform ${categoryDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
+                          </button>
+                          <AnimatePresence>
+                            {categoryDropdownOpen && (
+                              <motion.div className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden max-h-[200px] overflow-y-auto" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.15 }}>
+                                {composerCategories.map((cat) => (
+                                  <button key={cat} onClick={() => { setComposerCategory(cat); setCategoryDropdownOpen(false); }} className={`w-full text-left px-3 py-2.5 transition-colors ${composerCategory === cat ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>{cat}</button>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                        <div className="relative mt-3">
+                          <button
+                            onClick={() => { setPostTypeDropdownOpen(!postTypeDropdownOpen); setProjectDropdownOpen(false); setCategoryDropdownOpen(false); }}
                             className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
                             style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                           >
@@ -1032,7 +1161,7 @@ export function ExplorePage() {
                               <motion.div className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden" initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: 0.15 }}>
                                 {(['New Project', 'Project Update', 'Announcement', 'Shameless Self-Promotion'] as CreatorPostType[]).map((pt) => (
                                   <button key={pt} onClick={() => { setComposerPostType(pt); setPostTypeDropdownOpen(false); }} className={`w-full text-left px-3 py-2.5 transition-colors ${composerPostType === pt ? 'bg-[#1782FF]/10 text-[#1782FF]' : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'}`} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}>
-                                    {pt === 'New Project' ? `✨ ${pt}` : pt === 'Shameless Self-Promotion' ? `😜 ${pt}` : pt === 'Announcement' ? `📣 ${pt}` : pt === 'Project Update' ? `🚀 ${pt}` : pt}
+                                    {pt === 'New Project' ? `\u2728 ${pt}` : pt === 'Shameless Self-Promotion' ? `\uD83D\uDE1C ${pt}` : pt === 'Announcement' ? `\uD83D\uDCE3 ${pt}` : pt === 'Project Update' ? `\uD83D\uDE80 ${pt}` : pt}
                                   </button>
                                 ))}
                               </motion.div>
@@ -1271,11 +1400,11 @@ export function ExplorePage() {
                     {/* Project Dropdown */}
                     <div className="relative mt-3">
                       <button
-                        onClick={() => { setProjectDropdownOpen(!projectDropdownOpen); setPostTypeDropdownOpen(false); }}
-                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                        onClick={() => { setProjectDropdownOpen(!projectDropdownOpen); setCategoryDropdownOpen(false); setPostTypeDropdownOpen(false); }}
+                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors text-left"
                         style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                       >
-                        {composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
+                        <span className="flex-1">{composerProject || <span>Select Project <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}</span>
                         <CaretDown className={`h-3 w-3 transition-transform ${projectDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
                       </button>
                       <AnimatePresence>
@@ -1287,10 +1416,10 @@ export function ExplorePage() {
                             exit={{ opacity: 0, y: -5 }}
                             transition={{ duration: 0.15 }}
                           >
-                            {['6-DOF Robot Arm with Computer Vision', 'Custom Mechanical Keyboard from Scratch', 'Raspberry Pi Weather Station Network', 'DIY FPV Racing Drone Build', '3D Printed Planetary Gear Train'].map((proj) => (
+                            {['Custom Mechanical Keyboard from Scratch', 'Raspberry Pi Weather Station Network', '3D Printed Planetary Gear Train'].map((proj) => (
                               <button
                                 key={proj}
-                                onClick={() => { setComposerProject(proj); setProjectDropdownOpen(false); }}
+                                onClick={() => handleSelectProject(proj)}
                                 className={`w-full text-left px-3 py-2.5 transition-colors ${
                                   composerProject === proj
                                     ? 'bg-[#1782FF]/10 text-[#1782FF]'
@@ -1306,10 +1435,48 @@ export function ExplorePage() {
                       </AnimatePresence>
                     </div>
 
+                    {/* Category Dropdown */}
+                    <div className="relative mt-3">
+                      <button
+                        onClick={() => { setCategoryDropdownOpen(!categoryDropdownOpen); setProjectDropdownOpen(false); setPostTypeDropdownOpen(false); }}
+                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
+                        style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
+                      >
+                        {composerCategory || <span>Category <span style={{ color: '#9ca3af', fontWeight: 400 }}>(Optional)</span></span>}
+                        <CaretDown className={`h-3 w-3 transition-transform ${categoryDropdownOpen ? 'rotate-180' : ''}`} weight="bold" />
+                      </button>
+                      <AnimatePresence>
+                        {categoryDropdownOpen && (
+                          <motion.div
+                            className="absolute top-full left-0 right-0 mt-1 rounded-[2px] border border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/80 dark:bg-black/80 shadow-xl z-50 overflow-hidden max-h-[200px] overflow-y-auto"
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            transition={{ duration: 0.15 }}
+                          >
+                            {composerCategories.map((cat) => (
+                              <button
+                                key={cat}
+                                onClick={() => { setComposerCategory(cat); setCategoryDropdownOpen(false); }}
+                                className={`w-full text-left px-3 py-2.5 transition-colors ${
+                                  composerCategory === cat
+                                    ? 'bg-[#1782FF]/10 text-[#1782FF]'
+                                    : 'text-[#212121] dark:text-white hover:bg-white/40 dark:hover:bg-white/10'
+                                }`}
+                                style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
+                              >
+                                {cat}
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
                     {/* Post Type Dropdown */}
                     <div className="relative mt-3">
                       <button
-                        onClick={() => { setPostTypeDropdownOpen(!postTypeDropdownOpen); setProjectDropdownOpen(false); }}
+                        onClick={() => { setPostTypeDropdownOpen(!postTypeDropdownOpen); setProjectDropdownOpen(false); setCategoryDropdownOpen(false); }}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 bg-white/20 dark:bg-white/5 text-[#212121] dark:text-white hover:border-[#1782FF]/30 transition-colors"
                         style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                       >
@@ -1336,7 +1503,7 @@ export function ExplorePage() {
                                 }`}
                                 style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem' }}
                               >
-                                {pt === 'New Project' ? `✨ ${pt}` : pt === 'Shameless Self-Promotion' ? `😜 ${pt}` : pt === 'Announcement' ? `📣 ${pt}` : pt === 'Project Update' ? `🚀 ${pt}` : pt}
+                                {pt === 'New Project' ? `\u2728 ${pt}` : pt === 'Shameless Self-Promotion' ? `\uD83D\uDE1C ${pt}` : pt === 'Announcement' ? `\uD83D\uDCE3 ${pt}` : pt === 'Project Update' ? `\uD83D\uDE80 ${pt}` : pt}
                               </button>
                             ))}
                           </motion.div>
