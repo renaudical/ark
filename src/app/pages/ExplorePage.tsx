@@ -401,26 +401,26 @@ function DifficultyBadge({ difficulty }: { difficulty: string }) {
 
 function EngagementBar({ comments, hearts, backers, views, difficulty, category }: { comments?: number; hearts?: number; backers?: number; views?: number; difficulty?: string; category?: string }) {
   return (
-    <div className="flex items-center gap-4 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
       {difficulty && <DifficultyBadge difficulty={difficulty} />}
       {hearts !== undefined && (
-        <span className="flex items-center gap-1">
-          <Heart className="h-3.5 w-3.5" weight="fill" /> {hearts.toLocaleString()}
+        <span className="flex items-center gap-1 shrink-0">
+          <Heart className="h-3.5 w-3.5 shrink-0" weight="fill" /> {hearts.toLocaleString()}
         </span>
       )}
       {comments !== undefined && (
-        <span className="flex items-center gap-1">
-          <ChatCircle className="h-3.5 w-3.5" weight="fill" /> {comments.toLocaleString()}
+        <span className="flex items-center gap-1 shrink-0">
+          <ChatCircle className="h-3.5 w-3.5 shrink-0" weight="fill" /> {comments.toLocaleString()}
         </span>
       )}
       {backers !== undefined && (
-        <span className="flex items-center gap-1">
-          <CurrencyDollar className="h-3.5 w-3.5" weight="fill" /> {backers.toLocaleString()} Backers
+        <span className="flex items-center gap-1 shrink-0 hidden sm:flex">
+          <CurrencyDollar className="h-3.5 w-3.5 shrink-0" weight="fill" /> {backers.toLocaleString()} Backers
         </span>
       )}
       {views !== undefined && (
-        <span className="flex items-center gap-1">
-          <Eye className="h-3.5 w-3.5" /> {views.toLocaleString()} Views
+        <span className="flex items-center gap-1 shrink-0 hidden sm:flex">
+          <Eye className="h-3.5 w-3.5 shrink-0" /> {views.toLocaleString()} Views
         </span>
       )}
       {category && (
@@ -770,34 +770,34 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
     <AnimatedBorderCard>
       {/* Header bar */}
       <div
-        className="flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px]"
+        className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden"
         style={{ backgroundImage: config.gradient }}
       >
-        {config.icon}
-        <span className="text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
+        <div className="shrink-0">{config.icon}</div>
+        <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           {postType.toUpperCase()}
         </span>
         {postType === 'Project Update' && item.version && (
           <span
-            className="px-2 py-1 rounded-[2px] bg-white/10 border border-white/40 text-white"
+            className="px-2 py-1 rounded-[2px] bg-white/10 border border-white/40 text-white shrink-0"
             style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}
           >
             {item.version}
           </span>
         )}
-        <div className="flex-1" />
+        <div className="flex-1 min-w-0" />
         <button
           onClick={() => setLiked(!liked)}
-          className={`flex items-center gap-2 px-2 py-1.5 rounded-[2px] transition-all ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
+          className={`flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> LIKE
+          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> <span className="hidden sm:inline">LIKE</span>
         </button>
         <button
-          className="flex items-center gap-2 px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all"
+          className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ChatCircle className="h-3.5 w-3.5" /> COMMENT
+          <ChatCircle className="h-3.5 w-3.5" /> <span className="hidden sm:inline">COMMENT</span>
         </button>
       </div>
 
@@ -1313,12 +1313,13 @@ export function ExplorePage() {
               {/* Main Grid: Feed + Sidebar */}
               <div className="grid lg:grid-cols-3 gap-8">
                 {/* Feed Column */}
-                <div className="lg:col-span-2 space-y-8">
+                <div className="lg:col-span-2 space-y-8 min-w-0">
                   <AnimatePresence>
                     {filteredFeed.length > 0 ? (
                       filteredFeed.map((item, index) => (
                         <motion.div
                           key={item.id}
+                          className="min-w-0"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
