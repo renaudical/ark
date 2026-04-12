@@ -493,12 +493,13 @@ function FeedCardActions({ item }: { item: FeedItem }) {
 function NewProjectCard({ item }: { item: FeedItem }) {
   return (
     <AnimatedBorderCard>
-      <div className="h-[44px] flex items-center px-6 rounded-tl-[2px] rounded-tr-[2px]" style={{ backgroundImage: 'linear-gradient(28deg, #1782FF 0%, #B02BED 100%)' }}>
+      <div className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden" style={{ backgroundImage: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)' }}>
         <Rocket className="h-6 w-6 text-white shrink-0" weight="fill" />
-        <span className="text-white ml-2" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
+        <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           NEW PROJECT
         </span>
-        <span className="text-white/75 ml-auto" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+        <div className="flex-1 min-w-0" />
+        <span className="text-white/75 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
           {item.timestamp}
         </span>
       </div>
@@ -533,15 +534,18 @@ function NewProjectCard({ item }: { item: FeedItem }) {
 function UpdatedProjectCard({ item }: { item: FeedItem }) {
   return (
     <AnimatedBorderCard>
-      <div className="h-[44px] flex items-center px-6 rounded-tl-[2px] rounded-tr-[2px]" style={{ backgroundImage: 'linear-gradient(28deg, #258D40 0%, #34A853 100%)' }}>
+      <div className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden" style={{ backgroundImage: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)' }}>
         <ArrowUp className="h-6 w-6 text-white shrink-0" weight="bold" />
-        <span className="text-white ml-2" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
+        <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           PROJECT UPDATED
         </span>
-        <span className="ml-3 px-2 py-1 rounded-[2px] bg-[#00BC7D]/10 border border-[#00BC7D] text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
-          {item.version}
-        </span>
-        <span className="text-white/75 ml-auto" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+        {item.version && (
+          <span className="px-2 py-1 rounded-[2px] bg-white/10 border border-white/40 text-white shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+            {item.version}
+          </span>
+        )}
+        <div className="flex-1 min-w-0" />
+        <span className="text-white/75 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
           {item.timestamp}
         </span>
       </div>
@@ -575,12 +579,13 @@ function UpdatedProjectCard({ item }: { item: FeedItem }) {
 function TrendingProjectCard({ item }: { item: FeedItem }) {
   return (
     <AnimatedBorderCard>
-      <div className="h-[44px] flex items-center px-6 rounded-tl-[2px] rounded-tr-[2px]" style={{ backgroundImage: 'linear-gradient(28deg, #D47509 0%, #FF8904 100%)' }}>
+      <div className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden" style={{ backgroundImage: 'linear-gradient(30deg, #D47509 0%, #FF8904 100%)' }}>
         <Fire className="h-6 w-6 text-white shrink-0" weight="fill" />
-        <span className="text-white ml-2" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
+        <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           TRENDING
         </span>
-        <span className="text-white/75 ml-auto" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+        <div className="flex-1 min-w-0" />
+        <span className="text-white/75 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
           {item.trendingReason || item.timestamp}
         </span>
       </div>
@@ -695,12 +700,13 @@ function CommunityChallengeCard({ item }: { item: FeedItem }) {
 function WeeklyRoundupCard({ item }: { item: FeedItem }) {
   return (
     <AnimatedBorderCard>
-      <div className="h-[44px] flex items-center px-6 rounded-tl-[2px] rounded-tr-[2px]" style={{ backgroundImage: 'linear-gradient(28deg, #1782FF 0%, #B02BED 100%)' }}>
+      <div className="flex items-center gap-2 px-3 sm:px-6 py-2.5 rounded-tl-[2px] rounded-tr-[2px] overflow-hidden" style={{ backgroundImage: 'linear-gradient(30deg, #1782FF 0%, #B02BED 100%)' }}>
         <Rocket className="h-6 w-6 text-white shrink-0" weight="fill" />
-        <span className="text-white ml-2" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem', letterSpacing: '0.05em' }}>
+        <span className="text-white truncate" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}>
           OUT OF THIS WORLD PROJECTS
         </span>
-        <span className="text-white/75 ml-auto hidden sm:inline" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+        <div className="flex-1 min-w-0" />
+        <span className="text-white/75 shrink-0 hidden sm:inline" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
           {item.timestamp === '1 day ago' ? 'March 15 – March 22' : item.timestamp}
         </span>
       </div>
