@@ -1112,14 +1112,19 @@ export function ExplorePage() {
               <div className="sm:hidden mb-4">
                 <button
                   onClick={() => setMobileComposerOpen(!mobileComposerOpen)}
-                  className="w-full flex items-center justify-between px-5 py-3 rounded-[2px] border border-[#d1d1d6] dark:border-white/10 backdrop-blur-lg bg-white/30 dark:bg-black/20 text-[#1782FF] dark:text-white/70 transition-all"
+                  className="w-full flex items-center justify-between px-5 py-3 rounded-[2px] relative overflow-hidden text-white group"
                   style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '0.05em' }}
                 >
-                  <span className="flex items-center gap-2">
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }}
+                  />
+                  <div className="absolute inset-0 bg-[#1782FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10 flex items-center gap-2">
                     <PencilSimple className="h-3.5 w-3.5" weight="bold" />
                     POST TO FEED
                   </span>
-                  <CaretDown className={`h-3.5 w-3.5 transition-transform duration-300 ${mobileComposerOpen ? 'rotate-180' : ''}`} weight="bold" />
+                  <CaretDown className={`relative z-10 h-3.5 w-3.5 transition-transform duration-300 ${mobileComposerOpen ? 'rotate-180' : ''}`} weight="bold" />
                 </button>
                 <AnimatePresence>
                   {mobileComposerOpen && (
