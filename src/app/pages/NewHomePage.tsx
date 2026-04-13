@@ -150,7 +150,7 @@ export function NewHomePage() {
                           <span className="relative z-10">FIND A PROJECT</span>
                         </Button>
                       </Link>
-                      <Link to="/create-project" className="flex-1 md:flex-none min-w-[140px]">
+                      <Link to="/create-project-2" className="flex-1 md:flex-none min-w-[140px]">
                         <Button className="w-full font-['IBM_Plex_Mono',monospace] font-normal text-xs tracking-wider border-[rgba(190,190,200,0.7)] dark:border-white/40 bg-transparent dark:bg-black/40 hover:!border-[#1782FF] text-[#212121] dark:text-white transition-colors" variant="outline">
                           START CREATING
                           <ArrowRight size={14} weight="bold" className="ml-2" />
@@ -341,7 +341,7 @@ export function NewHomePage() {
                     </div>
 
                     {/* CTA Button */}
-                    <Link to="/creator/1">
+                    <Link to="/create-project-2">
                       <Button className="text-white relative overflow-hidden font-['IBM_Plex_Mono',monospace] text-xs tracking-wider group">
                         <div
                           className="absolute inset-0"
@@ -354,7 +354,7 @@ export function NewHomePage() {
                         />
                         <span className="relative z-10 flex items-center">
                           <Upload size={16} weight="bold" className="mr-2" />
-                          START UPLOADING
+                          START CREATING
                         </span>
                       </Button>
                     </Link>

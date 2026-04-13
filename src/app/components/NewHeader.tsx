@@ -132,7 +132,7 @@ export function NewHeader() {
 
         {/* Bottom section: Create Project + Search */}
         <div className="p-6 border-t border-border/40 flex flex-col gap-4">
-          <Link to="/create-project" onClick={() => setMobileMenuOpen(false)}>
+          <Link to="/create-project-2" onClick={() => setMobileMenuOpen(false)}>
             <Button
               className="w-full text-white relative overflow-hidden font-['IBM_Plex_Mono',monospace] text-sm tracking-wider group"
             >
@@ -240,7 +240,7 @@ export function NewHeader() {
                 </Button>
               </Link>
               <div className="hidden md:block w-2" />
-              <Link to="/create-project">
+              <Link to="/create-project-2">
                 <Button
                   className="hidden md:inline-flex text-white relative overflow-hidden font-['IBM_Plex_Mono',monospace] text-xs tracking-wider group"
                   size="sm"

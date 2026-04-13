@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router';
 import { lazy } from 'react';
 import { NewHomePage } from './pages/NewHomePage';
 import { ProjectsPageWrapper } from './pages/ProjectsPageWrapper';
-import { ProjectDetailPageWrapper } from './pages/ProjectDetailPageWrapper';
 import { NewCreatorsPage } from './pages/NewCreatorsPage';
 import { CreatorPage } from './pages/CreatorPage';
 import {
@@ -35,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/project/:id',
-        Component: ProjectDetailPageWrapper,
+        Component: ProjectDemoPage,
       },
       {
         path: '/creators',
