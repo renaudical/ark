@@ -794,7 +794,6 @@ export function ProjectDemoPage() {
                         ))}
                         <CategoryBadge category={project.difficulty} />
                         <div className="flex items-center gap-3 shrink-0">
-                          <span className="text-muted-foreground">•</span>
                           <button
                             onClick={handleHeart}
                             className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
@@ -812,7 +811,6 @@ export function ProjectDemoPage() {
                             </span>
                             <span>{heartCount}</span>
                           </button>
-                          <span className="text-muted-foreground">•</span>
                           <button
                             onClick={() => {
                               setDiscussionOpen(true);
@@ -830,7 +828,6 @@ export function ProjectDemoPage() {
                             {project.comments}
                           </button>
                         </div>
-                        <span className="text-muted-foreground hidden sm:inline">•</span>
                         <button
                           className="hidden sm:flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
                           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
