@@ -11,7 +11,7 @@ import { CategoryBadge } from '../components/CategoryBadge';
 import { AnimatedBorderCard } from '../components/AnimatedBorderCard';
 import {
   TrendUp,
-  ChatCircle,
+  Chat,
   Users,
   Star,
   CaretDown,
@@ -398,18 +398,124 @@ function DifficultyBadge({ difficulty }: { difficulty: string }) {
   );
 }
 
+// Helper: renders two icons (regular + filled) and swaps on group-hover or active state.
+// Parent must have the `group` class for hover to work.
+function HoverFillIcon({
+  Icon,
+  active = false,
+  className = '',
+}: {
+  Icon: typeof ThumbsUp;
+  active?: boolean;
+  className?: string;
+}) {
+  return (
+    <span className={`relative inline-flex shrink-0 ${className}`}>
+      <Icon weight="regular" className={`transition-opacity ${active ? 'opacity-0' : 'group-hover:opacity-0'}`} />
+      <Icon weight="fill" className={`absolute inset-0 transition-opacity ${active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+    </span>
+  );
+}
+
+// Mock comments used when a post's comment section is expanded.
+const mockPostComments = [
+  {
+    id: 1,
+    author: 'Hannah Lee',
+    authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    content: 'This is exactly what I needed! Downloading now to try on my printer tonight.',
+    timestamp: '2 hours ago',
+  },
+  {
+    id: 2,
+    author: 'Marcus Wong',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    content: 'Love the attention to detail. Did you end up going with PETG or PLA for the final version?',
+    timestamp: '5 hours ago',
+  },
+  {
+    id: 3,
+    author: 'Priya Nair',
+    authorAvatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400',
+    content: 'Just followed you — can\'t wait to see the next iteration!',
+    timestamp: '1 day ago',
+  },
+];
+
+function PostCommentsSection() {
+  const [input, setInput] = useState('');
+  return (
+    <div className="px-4 sm:px-6 pb-4 border-t border-[#d1d1d6] dark:border-white/10">
+      {/* Comment Form */}
+      <div className="mt-4 p-3 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] bg-white/40 dark:bg-white/[0.02]">
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Add a comment..."
+          className="w-full min-h-[72px] p-2 border border-[#d1d1d6] dark:border-white/10 focus:border-[#1782FF] focus:outline-none resize-y rounded-[2px] text-[#212121] dark:text-white placeholder:text-[#717182] dark:placeholder:text-white/40 transition-colors bg-white dark:[background:linear-gradient(90deg,rgba(3,2,19,0.95)_0%,rgba(3,2,19,0.5)_100%)]"
+          style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.8125rem', lineHeight: '1.5' }}
+        />
+        <div className="flex justify-end mt-2">
+          <Button
+            className="text-white relative overflow-hidden group rounded-[2px] h-8"
+            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.6875rem', letterSpacing: '-0.02em' }}
+          >
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(90deg, #B02BED 0%, #1782FF 75%, #1782FF 100%)' }}
+            />
+            <span className="relative z-10 flex items-center">
+              <PaperPlaneTilt className="mr-1.5 h-3 w-3" />
+              POST COMMENT
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Comments list */}
+      <div className="mt-4 space-y-3">
+        {mockPostComments.map((comment) => (
+          <div key={comment.id} className="p-3 border border-[#d1d1d6] dark:border-white/10 rounded-[2px] bg-white/30 dark:bg-white/[0.02]">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-muted flex-shrink-0">
+                <ImageWithFallback src={comment.authorAvatar} alt={comment.author} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[#212121] dark:text-white" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.8125rem', fontWeight: 600 }}>
+                    {comment.author}
+                  </span>
+                  <span className="text-[#717182] dark:text-white/40" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem' }}>
+                    {comment.timestamp}
+                  </span>
+                </div>
+                <p className="text-[#717182] dark:text-white/70" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.8125rem', lineHeight: '1.5' }}>
+                  {comment.content}
+                </p>
+                <button className="mt-1.5 text-[#717182] dark:text-white/40 hover:text-[#1782FF] transition-colors" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.625rem', letterSpacing: '-0.02em' }}>
+                  REPLY
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function EngagementBar({ comments, hearts, backers, views, difficulty, category }: { comments?: number; hearts?: number; backers?: number; views?: number; difficulty?: string; category?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[#717182] dark:text-white/50" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
       {difficulty && <DifficultyBadge difficulty={difficulty} />}
       {hearts !== undefined && (
         <span className="flex items-center gap-1 shrink-0">
-          <ThumbsUp className="h-3.5 w-3.5 shrink-0" weight="fill" /> {hearts.toLocaleString()}
+          <ThumbsUp className="h-3.5 w-3.5 shrink-0" /> {hearts.toLocaleString()}
         </span>
       )}
       {comments !== undefined && (
         <span className="flex items-center gap-1 shrink-0">
-          <ChatCircle className="h-3.5 w-3.5 shrink-0" weight="fill" /> {comments.toLocaleString()}
+          <Chat className="h-3.5 w-3.5 shrink-0" /> {comments.toLocaleString()}
         </span>
       )}
       {backers !== undefined && (
@@ -532,6 +638,7 @@ function NewProjectCard({ item }: { item: FeedItem }) {
 
 function UpdatedProjectCard({ item }: { item: FeedItem }) {
   const [liked, setLiked] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   return (
     <AnimatedBorderCard>
       {/* Header bar */}
@@ -551,21 +658,24 @@ function UpdatedProjectCard({ item }: { item: FeedItem }) {
         <div className="flex-1 min-w-0" />
         <button
           onClick={() => setLiked(!liked)}
-          className={`flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
+          className={`group flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> <span className="hidden sm:inline">LIKE</span>
+          <HoverFillIcon Icon={ThumbsUp} active={liked} className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">LIKE</span>
         </button>
         <button
-          className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
+          onClick={() => setCommentsOpen(!commentsOpen)}
+          className="group flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ChatCircle className="h-3.5 w-3.5" /> <span className="hidden sm:inline">COMMENT</span>
+          <HoverFillIcon Icon={Chat} className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">COMMENT</span>
         </button>
       </div>
 
       {/* Embedded project card */}
-      <div className="mx-4 sm:mx-6 my-4 bg-[rgba(13,14,36,0.9)] border border-white/20 rounded-[2px] overflow-hidden">
+      <div className="mx-4 sm:mx-6 my-4 bg-white/50 dark:bg-[rgba(13,14,36,0.9)] border border-white/40 dark:border-white/20 rounded-[2px] overflow-hidden">
         <div className="p-4 flex flex-col gap-4">
           <EngagementBar
             difficulty={item.projectDifficulty}
@@ -603,6 +713,21 @@ function UpdatedProjectCard({ item }: { item: FeedItem }) {
 
         <FeedCardActions item={item} />
       </div>
+
+      {/* Collapsible comments section */}
+      <AnimatePresence>
+        {commentsOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <PostCommentsSection />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatedBorderCard>
   );
 }
@@ -803,6 +928,7 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
 
   const config = headerConfig[postType];
   const [liked, setLiked] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
 
   return (
     <AnimatedBorderCard>
@@ -826,16 +952,19 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
         <div className="flex-1 min-w-0" />
         <button
           onClick={() => setLiked(!liked)}
-          className={`flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
+          className={`group flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] transition-all shrink-0 ${liked ? 'text-white' : 'text-white/80 hover:text-white'}`}
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ThumbsUp className="h-3.5 w-3.5" weight={liked ? 'fill' : 'regular'} /> <span className="hidden sm:inline">LIKE</span>
+          <HoverFillIcon Icon={ThumbsUp} active={liked} className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">LIKE</span>
         </button>
         <button
-          className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
+          onClick={() => setCommentsOpen(!commentsOpen)}
+          className="group flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2 py-1.5 rounded-[2px] text-white/80 hover:text-white transition-all shrink-0"
           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}
         >
-          <ChatCircle className="h-3.5 w-3.5" /> <span className="hidden sm:inline">COMMENT</span>
+          <HoverFillIcon Icon={Chat} className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">COMMENT</span>
         </button>
       </div>
 
@@ -858,11 +987,11 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-white/20 mx-0" />
+      <div className="h-px bg-[#d1d1d6] dark:bg-white/20 mx-0" />
 
       {/* Embedded project card */}
       {item.projectTitle && (
-        <div className="mx-4 sm:mx-6 my-4 bg-[rgba(13,14,36,0.9)] border border-white/20 rounded-[2px] overflow-hidden">
+        <div className="mx-4 sm:mx-6 my-4 bg-white/50 dark:bg-[rgba(13,14,36,0.9)] border border-white/40 dark:border-white/20 rounded-[2px] overflow-hidden">
           <div className="p-4 flex flex-col gap-4">
             <EngagementBar
               difficulty={item.projectDifficulty}
@@ -925,6 +1054,21 @@ function CreatorPostCard({ item }: { item: FeedItem }) {
           {item.projectCategory && <CategoryBadge category={item.projectCategory} />}
         </div>
       )}
+
+      {/* Collapsible comments section */}
+      <AnimatePresence>
+        {commentsOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <PostCommentsSection />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatedBorderCard>
   );
 }
@@ -1000,7 +1144,7 @@ function SidebarProjectCard({ project }: { project: SidebarProject }) {
         </span>
       </div>
       <span className="flex items-center gap-0.5 text-[#212121]/40 dark:text-white/40 shrink-0" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.7rem' }}>
-        <ThumbsUp className="h-3 w-3" weight="fill" /> {project.hearts}
+        <ThumbsUp className="h-3 w-3" /> {project.hearts}
       </span>
     </Link>
   );

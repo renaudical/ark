@@ -128,7 +128,7 @@ export function ProjectCard({
               
               {/* Likes */}
               <div className="flex items-center gap-1 pr-2 border-r border-[rgba(190,190,200,0.25)]">
-                <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" weight="fill" />
+                <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" />
                 <span className="font-['IBM_Plex_Mono',monospace] text-xs tracking-[0.24px] text-[#717182] dark:text-[#BEBEC8]">
                   {displayLikes}
                 </span>

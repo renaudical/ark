@@ -9,7 +9,7 @@ import { ProjectCard } from './ProjectCard';
 import { CategoryBadge } from './CategoryBadge';
 import { 
   ThumbsUp,
-  ChatCircle, 
+  Chat,
   ShareNetwork, 
   Upload, 
   Rocket, 
@@ -368,7 +368,7 @@ export function ProjectDetailPage() {
                 </button>
                 <span className="text-muted-foreground">•</span>
                 <span className="flex items-center gap-1.5 text-muted-foreground" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}>
-                  <ChatCircle className="h-4 w-4" />
+                  <Chat className="h-4 w-4" />
                   {project.comments}
                 </span>
                 <span className="text-muted-foreground hidden sm:inline">•</span>
@@ -1010,7 +1010,7 @@ export function ProjectDetailPage() {
                       { label: 'PROJECT VIEWS', value: projectAnalytics.totalViews.toLocaleString(), trend: projectAnalytics.viewsTrend, icon: Eye },
                       { label: 'TOTAL BACKERS', value: projectAnalytics.totalBackers.toLocaleString(), trend: projectAnalytics.backerTrend, icon: Users },
                       { label: 'SHARES', value: projectAnalytics.totalShares.toLocaleString(), trend: projectAnalytics.sharesTrend, icon: ShareNetwork },
-                      { label: 'COMMENTS', value: projectAnalytics.totalComments.toString(), trend: null, icon: ChatCircle, badge: `${projectAnalytics.newComments} NEW` },
+                      { label: 'COMMENTS', value: projectAnalytics.totalComments.toString(), trend: null, icon: Chat, badge: `${projectAnalytics.newComments} NEW` },
                     ].map((stat) => (
                       <div key={stat.label} className="p-3 border border-border hover:border-[#1782FF] transition-colors rounded-[2px]">
                         <div className="flex items-center gap-1.5 mb-2">
@@ -1043,7 +1043,7 @@ export function ProjectDetailPage() {
                   <div className="mt-4 pt-4 border-t border-border space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground flex items-center gap-1.5" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.6875rem', letterSpacing: '-0.02em' }}>
-                        <ThumbsUp className="h-3.5 w-3.5" weight="fill" />
+                        <ThumbsUp className="h-3.5 w-3.5" />
                         TOTAL LIKES
                       </span>
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', fontWeight: 700 }}>

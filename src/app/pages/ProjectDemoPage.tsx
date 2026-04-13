@@ -14,7 +14,7 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { ProjectCard } from '../components/ProjectCard';
 import {
   ThumbsUp,
-  ChatCircle,
+  Chat,
   ShareNetwork,
   Rocket,
   CaretDown,
@@ -796,17 +796,38 @@ export function ProjectDemoPage() {
                         <span className="text-muted-foreground">•</span>
                         <button
                           onClick={handleHeart}
-                          className="flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
+                          className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
                           style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
                         >
-                          <ThumbsUp className={`h-4 w-4 transition-all ${isHearted ? 'text-white' : ''}`} weight={isHearted ? 'fill' : 'regular'} />
+                          <span className="relative inline-flex h-4 w-4 shrink-0">
+                            <ThumbsUp
+                              weight="regular"
+                              className={`h-4 w-4 transition-opacity ${isHearted ? 'opacity-0' : 'group-hover:opacity-0'}`}
+                            />
+                            <ThumbsUp
+                              weight="fill"
+                              className={`absolute inset-0 h-4 w-4 transition-opacity ${isHearted ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100'}`}
+                            />
+                          </span>
                           <span>{heartCount}</span>
                         </button>
                         <span className="text-muted-foreground">•</span>
-                        <span className="flex items-center gap-1.5 text-muted-foreground" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}>
-                          <ChatCircle className="h-4 w-4" />
+                        <button
+                          onClick={() => {
+                            setDiscussionOpen(true);
+                            setTimeout(() => {
+                              document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 100);
+                          }}
+                          className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
+                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
+                        >
+                          <span className="relative inline-flex h-4 w-4 shrink-0">
+                            <Chat weight="regular" className="h-4 w-4 transition-opacity group-hover:opacity-0" />
+                            <Chat weight="fill" className="absolute inset-0 h-4 w-4 transition-opacity opacity-0 group-hover:opacity-100" />
+                          </span>
                           {project.comments}
-                        </span>
+                        </button>
                         <span className="text-muted-foreground hidden sm:inline">•</span>
                         <button
                           className="hidden sm:flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
@@ -838,7 +859,7 @@ export function ProjectDemoPage() {
                               <div className="absolute inset-0 bg-[#1782FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                             </>
                           )}
-                          <ThumbsUp className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} />
+                          <ThumbsUp className={`mr-2 h-4 w-4 ${!isFollowing ? 'relative z-10' : ''}`} weight={isFollowing ? 'fill' : 'regular'} />
                           <span className={!isFollowing ? 'relative z-10' : ''}>{isFollowing ? 'FOLLOWING' : 'FOLLOW PROJECT'}</span>
                         </Button>
                         <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
@@ -1078,7 +1099,7 @@ export function ProjectDemoPage() {
                                   value={commentInput}
                                   onChange={(e) => setCommentInput(e.target.value)}
                                   placeholder="Ask a question or share your experience building this project..."
-                                  className="w-full min-h-[100px] p-3 bg-background border border-border focus:border-[#1782FF] focus:outline-none resize-y transition-colors"
+                                  className="w-full min-h-[100px] p-3 border border-border focus:border-[#1782FF] focus:outline-none resize-y transition-colors bg-white dark:[background:linear-gradient(90deg,rgba(3,2,19,0.95)_0%,rgba(3,2,19,0.5)_100%)]"
                                   style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.875rem', lineHeight: '1.6' }}
                                 />
                                 <div className="flex justify-end mt-3">
@@ -1088,7 +1109,7 @@ export function ProjectDemoPage() {
                                   >
                                     <div
                                       className="absolute inset-0"
-                                      style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }}
+                                      style={{ background: 'linear-gradient(90deg, #B02BED 0%, #1782FF 75%, #1782FF 100%)' }}
                                     />
                                     <PaperPlaneTilt className="mr-2 h-4 w-4 relative z-10" />
                                     <span className="relative z-10">POST COMMENT</span>
@@ -1176,12 +1197,12 @@ export function ProjectDemoPage() {
                     <div className="lg:sticky lg:top-0 space-y-6">
                       {/* About Creator */}
                       <motion.div
-                        className="border border-white/10 bg-[rgba(13,14,36,0.7)] backdrop-blur-md p-4 rounded-[2px]"
+                        className="border border-white/40 dark:border-white/10 bg-white/50 dark:bg-[rgba(13,14,36,0.7)] backdrop-blur-md p-4 rounded-[2px] shadow-[0_8px_32px_0_rgba(31,38,135,0.1)]"
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                       >
-                        <h3 className="text-white mb-4" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}>
+                        <h3 className="text-[#212121] dark:text-white mb-4" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}>
                           ABOUT THE CREATOR
                         </h3>
 
@@ -1191,31 +1212,31 @@ export function ProjectDemoPage() {
                               <ImageWithFallback src={project.creatorAvatar} alt={project.creator} className="w-full h-full object-cover" />
                             </div>
                             <div>
-                              <div className="text-white" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1rem', fontWeight: 900, letterSpacing: '0.5px' }}>
+                              <div className="text-[#212121] dark:text-white" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '1rem', fontWeight: 900, letterSpacing: '0.5px' }}>
                                 {project.creator}
                               </div>
-                              <div className="text-white/70" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}>
+                              <div className="text-[#717182] dark:text-white/70" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem' }}>
                                 {creatorProjects.length + 1} Projects
                               </div>
                             </div>
                           </div>
                         </Link>
 
-                        <p className="text-white/70 mb-4" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.75rem', lineHeight: '1.5', letterSpacing: '0.5px' }}>
+                        <p className="text-[#717182] dark:text-white/70 mb-4" style={{ fontFamily: "'PP Monument', sans-serif", fontSize: '0.75rem', lineHeight: '1.5', letterSpacing: '0.5px' }}>
                           {project.creatorBio}
                         </p>
 
                         <div className="flex gap-2 mb-4">
-                          <a href={project.creatorSocials.twitter} className="w-8 h-8 border border-white/20 flex items-center justify-center hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="Twitter">
+                          <a href={project.creatorSocials.twitter} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 flex items-center justify-center text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="Twitter">
                             <TwitterLogo className="h-4 w-4" />
                           </a>
-                          <a href={project.creatorSocials.github} className="w-8 h-8 border border-white/20 flex items-center justify-center hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="GitHub">
+                          <a href={project.creatorSocials.github} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 flex items-center justify-center text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="GitHub">
                             <GithubLogo className="h-4 w-4" />
                           </a>
-                          <a href={project.creatorSocials.youtube} className="w-8 h-8 border border-white/20 flex items-center justify-center hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="YouTube">
+                          <a href={project.creatorSocials.youtube} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 flex items-center justify-center text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="YouTube">
                             <YoutubeLogo className="h-4 w-4" />
                           </a>
-                          <a href={project.creatorSocials.website} className="w-8 h-8 border border-white/20 flex items-center justify-center hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="Website">
+                          <a href={project.creatorSocials.website} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 flex items-center justify-center text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors rounded-[2px]" aria-label="Website">
                             <Globe className="h-4 w-4" />
                           </a>
                         </div>
@@ -1229,7 +1250,7 @@ export function ProjectDemoPage() {
                             className="absolute inset-0 rounded-[4px]"
                             style={{ background: 'linear-gradient(90deg, #1782FF 0%, #1782FF 25%, #B02BED 100%)' }}
                           />
-                          <div className="relative flex items-center justify-center gap-2 bg-[rgba(13,14,36,0.9)] text-white rounded-[3px] py-2.5 hover:bg-[rgba(13,14,36,0.7)] transition-colors">
+                          <div className="relative flex items-center justify-center gap-2 bg-white dark:bg-[rgba(13,14,36,0.9)] text-[#212121] dark:text-white rounded-[3px] py-2.5 hover:bg-white/80 dark:hover:bg-[rgba(13,14,36,0.7)] transition-colors">
                             <UserPlus className="h-4 w-4" />
                             <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', fontWeight: 600 }}>
                               {isFollowing ? 'FOLLOWING CREATOR' : 'FOLLOW CREATOR'}
@@ -1240,7 +1261,7 @@ export function ProjectDemoPage() {
 
                       {/* More from Creator carousel */}
                       <motion.div
-                        className="border border-white/10 bg-[rgba(13,14,36,0.7)] backdrop-blur-md p-4 rounded-[2px]"
+                        className="border border-white/40 dark:border-white/10 bg-white/50 dark:bg-[rgba(13,14,36,0.7)] backdrop-blur-md p-4 rounded-[2px] shadow-[0_8px_32px_0_rgba(31,38,135,0.1)]"
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6, delay: 0.3 }}
@@ -1248,27 +1269,30 @@ export function ProjectDemoPage() {
                         onMouseLeave={() => setIsPaused(false)}
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}>
+                          <h3 className="text-[#212121] dark:text-white" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', letterSpacing: '-0.02em' }}>
                             MORE FROM {project.creator.toUpperCase()}
                           </h3>
                           <div className="flex gap-2">
-                            <button onClick={goToPreviousProject} className="w-8 h-8 border border-white/20 hover:border-[#1782FF] hover:text-[#1782FF] text-white transition-colors flex items-center justify-center rounded-[2px]" aria-label="Previous project">
+                            <button onClick={goToPreviousProject} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors flex items-center justify-center rounded-[2px]" aria-label="Previous project">
                               <CaretLeft className="h-4 w-4" />
                             </button>
-                            <button onClick={goToNextProject} className="w-8 h-8 border border-white/20 hover:border-[#1782FF] hover:text-[#1782FF] text-white transition-colors flex items-center justify-center rounded-[2px]" aria-label="Next project">
+                            <button onClick={goToNextProject} className="w-8 h-8 border border-[#d1d1d6] dark:border-white/20 text-[#212121] dark:text-white hover:border-[#1782FF] hover:text-[#1782FF] transition-colors flex items-center justify-center rounded-[2px]" aria-label="Next project">
                               <CaretRight className="h-4 w-4" />
                             </button>
                           </div>
                         </div>
 
                         <div className="relative overflow-hidden">
-                          <AnimatePresence mode="wait">
+                          <AnimatePresence mode="popLayout" initial={false}>
                             <motion.div
                               key={currentProjectIndex}
-                              initial={{ x: 100 }}
-                              animate={{ x: 0 }}
-                              exit={{ x: -100 }}
-                              transition={{ duration: 0.3 }}
+                              initial={{ x: 40, opacity: 0 }}
+                              animate={{ x: 0, opacity: 1 }}
+                              exit={{ x: -40, opacity: 0 }}
+                              transition={{
+                                x: { type: 'spring', stiffness: 260, damping: 30 },
+                                opacity: { duration: 0.25, ease: 'easeOut' },
+                              }}
                             >
                               <ProjectCard {...creatorProjects[currentProjectIndex]} disableAnimation={true} />
                             </motion.div>

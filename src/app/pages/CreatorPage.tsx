@@ -1,4 +1,4 @@
-import { ThumbsUp, ChatCircle, GithubLogo, TwitterLogo, LinkedinLogo, YoutubeLogo, InstagramLogo, Globe, MapPin, CalendarBlank, Users, Eye, ArrowRight, Money, Gift } from '@phosphor-icons/react';
+import { ThumbsUp, Chat, GithubLogo, TwitterLogo, LinkedinLogo, YoutubeLogo, InstagramLogo, Globe, MapPin, CalendarBlank, Users, Eye, ArrowRight, Money, Gift } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { motion } from 'motion/react';
@@ -175,7 +175,7 @@ export function CreatorPage() {
                         onClick={handleFollow}
                         className="px-6 py-2.5 rounded-[2px] font-['IBM_Plex_Mono',monospace] font-normal text-xs tracking-wider transition-all flex items-center gap-2 border border-[rgba(190,190,200,0.7)] dark:border-white/40 bg-transparent dark:bg-black/40 hover:!border-[#1782FF] text-[#212121] dark:text-white"
                       >
-                        <ThumbsUp size={16} weight={isFollowing ? 'fill' : 'bold'} />
+                        <ThumbsUp size={16} weight={isFollowing ? 'fill' : 'regular'} />
                         <span>
                           {isFollowing ? 'FOLLOWING CREATOR' : 'FOLLOW CREATOR'}
                         </span>
@@ -183,7 +183,7 @@ export function CreatorPage() {
                       <button
                         className="px-6 py-2.5 rounded-[2px] font-['IBM_Plex_Mono',monospace] font-normal text-xs tracking-wider transition-all flex items-center gap-2 border border-[rgba(190,190,200,0.7)] dark:border-white/40 bg-transparent dark:bg-black/40 hover:!border-[#1782FF] text-[#212121] dark:text-white"
                       >
-                        <ChatCircle size={16} weight="bold" />
+                        <Chat size={16} weight="regular" />
                         <span>
                           MESSAGE
                         </span>
@@ -267,7 +267,7 @@ export function CreatorPage() {
                             
                             {/* Likes */}
                             <div className="flex items-center gap-1 pr-2 border-r border-[rgba(190,190,200,0.25)]">
-                              <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" weight="fill" />
+                              <ThumbsUp className="h-3 w-3 text-[#717182] dark:text-[#BEBEC8]" />
                               <span className="font-['IBM_Plex_Mono',monospace] text-xs tracking-[0.24px] text-[#717182] dark:text-[#BEBEC8]">
                                 {project.hearts}
                               </span>
@@ -297,7 +297,7 @@ export function CreatorPage() {
                           {/* Supporters */}
                           <div className="pt-2 border-t border-[rgba(190,190,200,0.25)]">
                             <div className="flex items-center gap-2">
-                              <ThumbsUp size={14} weight="fill" className="text-[#1782FF]" />
+                              <ThumbsUp size={14} className="text-[#1782FF]" />
                               <p className="font-['IBM_Plex_Mono',monospace] text-xs text-[#717182] dark:text-[#BEBEC8]">
                                 {project.supporters} SUPPORTERS
                               </p>

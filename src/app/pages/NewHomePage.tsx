@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkle, ShoppingBag, Chats, FileText, ShoppingCart, ChatCircle, GitBranch, CurrencyDollar, GraduationCap, Check, Upload } from '@phosphor-icons/react';
+import { ArrowRight, Sparkle, ShoppingBag, Chats, FileText, ShoppingCart, GitBranch, CurrencyDollar, GraduationCap, Check, Upload } from '@phosphor-icons/react';
 import { NewHeader } from '../components/NewHeader';
 import { NewFooter } from '../components/NewFooter';
 import { Button } from '../components/ui/button';

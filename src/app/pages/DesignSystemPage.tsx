@@ -9,7 +9,7 @@ import { Input } from '../components/ui/input';
 import {
   Rocket,
   ThumbsUp,
-  ChatCircle,
+  Chat,
   ShareNetwork,
   UserPlus,
   MagnifyingGlass,
@@ -711,7 +711,7 @@ font-family: 'IBM Plex Mono', monospace;
                       {[
                         { icon: ClipboardText, title: 'DETAILED DOCUMENTATION', desc: 'Every project includes comprehensive written instructions and diagrams.' },
                         { icon: ShoppingCart, title: 'COMPLETE PARTS LISTS', desc: 'Get exact components with direct links to purchase everything.' },
-                        { icon: ChatCircle, title: 'DIRECT Q&A', desc: 'Ask specific questions to creators and community members.' },
+                        { icon: Chat, title: 'DIRECT Q&A', desc: 'Ask specific questions to creators and community members.' },
                       ].map((f, i) => (
                         <div key={i} className="border border-border bg-white/50 dark:bg-black/30 backdrop-blur-lg p-6 hover:border-[#1782FF] transition-all rounded-[2px] group cursor-pointer">
                           <div className="w-12 h-12 flex items-center justify-center mb-4 bg-[rgba(23,130,255,0.1)] group-hover:bg-gradient-to-tr group-hover:from-[#1782FF] group-hover:via-[#1782FF] group-hover:to-[#B02BED] transition-all">
@@ -934,7 +934,7 @@ className="group-hover:scale-105 transition-transform duration-300"`}</CodeBlock
                     <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-6">
                       {[
                         { Icon: ThumbsUp, name: 'ThumbsUp' },
-                        { Icon: ChatCircle, name: 'ChatCircle' },
+                        { Icon: Chat, name: 'Chat' },
                         { Icon: ShareNetwork, name: 'ShareNetwork' },
                         { Icon: UserPlus, name: 'UserPlus' },
                         { Icon: MagnifyingGlass, name: 'Search' },

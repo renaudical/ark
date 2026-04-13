@@ -3,6 +3,7 @@ import { CaretRight, CaretDown, ThumbsUp } from '@phosphor-icons/react';
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { AnimatedBorderCard } from './AnimatedBorderCard';
+import { CategoryBadge } from './CategoryBadge';
 import svgPaths from '../../imports/svg-b4wgn5u213';
 
 interface Project {
@@ -50,7 +51,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
               <div className="flex items-center gap-6">
                 {/* Likes */}
                 <div className="flex items-center gap-1">
-                  <ThumbsUp className="size-4 text-[#1782FF]" weight="fill" />
+                  <ThumbsUp className="size-4 text-[#1782FF]" />
                   <span className="font-['IBM_Plex_Mono',monospace] text-xs text-[#717182] dark:text-[#bebec8] tracking-[-0.12px]">
                     {creator.likes}
                   </span>
@@ -79,14 +80,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
           {/* Categories */}
           <div className="flex gap-2 flex-wrap">
             {creator.categories.map((category, index) => (
-              <div
-                key={index}
-                className="border border-[#1782ff] rounded-full px-3 py-0.5"
-              >
-                <span className="font-['IBM_Plex_Mono',monospace] font-medium text-[10px] text-[#1782ff] leading-[13.333px]">
-                  {category}
-                </span>
-              </div>
+              <CategoryBadge key={index} category={category} />
             ))}
           </div>
 

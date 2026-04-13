@@ -5,15 +5,34 @@ const colorMap: Record<string, string> = {
   'CODING': '#f59e0b',
   'ELECTRONICS': '#06b6d4',
   'CNC & LASER': '#f43f5e',
+  'CNC': '#f43f5e',
   'DRONES': '#f97316',
   'IOT & SMART HOME': '#14b8a6',
+  'IOT': '#14b8a6',
   'ADVANCED': '#FF2056',
   'INTERMEDIATE': '#f59e0b',
   'BEGINNER': '#10b981',
+  'ARDUINO': '#00979D',
+  'PYTHON': '#FFD43B',
+  'PCB DESIGN': '#06b6d4',
+  'HARDWARE': '#06b6d4',
+  'WOODWORKING': '#A0522D',
+  'CAD': '#B02BED',
+  'COSPLAY': '#EC4899',
+  'PROPS': '#EC4899',
+  'FPV': '#f97316',
+  'WEARABLES': '#8B5CF6',
+  'LED': '#FBBF24',
+  'LASER CUTTING': '#f43f5e',
+  'DESIGN': '#B02BED',
+  'FABRICATION': '#f43f5e',
+  'MICROCONTROLLERS': '#1782FF',
+  'SENSORS': '#10b981',
+  'DATA': '#06b6d4',
 };
 
 export function CategoryBadge({ category, className = '', overlay = false }: { category: string; className?: string; overlay?: boolean }) {
-  const color = colorMap[category] || 'currentColor';
+  const color = colorMap[category.toUpperCase()] || '#1782FF';
 
   // Overlay badges (on images) — identical in light & dark mode
   if (overlay) {
