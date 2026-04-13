@@ -793,41 +793,43 @@ export function ProjectDemoPage() {
                           <CategoryBadge key={cat} category={cat} />
                         ))}
                         <CategoryBadge category={project.difficulty} />
-                        <span className="text-muted-foreground">•</span>
-                        <button
-                          onClick={handleHeart}
-                          className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
-                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
-                        >
-                          <span className="relative inline-flex h-4 w-4 shrink-0">
-                            <ThumbsUp
-                              weight="regular"
-                              className={`h-4 w-4 transition-opacity ${isHearted ? 'opacity-0' : 'group-hover:opacity-0'}`}
-                            />
-                            <ThumbsUp
-                              weight="fill"
-                              className={`absolute inset-0 h-4 w-4 transition-opacity ${isHearted ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100'}`}
-                            />
-                          </span>
-                          <span>{heartCount}</span>
-                        </button>
-                        <span className="text-muted-foreground">•</span>
-                        <button
-                          onClick={() => {
-                            setDiscussionOpen(true);
-                            setTimeout(() => {
-                              document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }, 100);
-                          }}
-                          className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
-                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
-                        >
-                          <span className="relative inline-flex h-4 w-4 shrink-0">
-                            <Chat weight="regular" className="h-4 w-4 transition-opacity group-hover:opacity-0" />
-                            <Chat weight="fill" className="absolute inset-0 h-4 w-4 transition-opacity opacity-0 group-hover:opacity-100" />
-                          </span>
-                          {project.comments}
-                        </button>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-muted-foreground">•</span>
+                          <button
+                            onClick={handleHeart}
+                            className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
+                          >
+                            <span className="relative inline-flex h-4 w-4 shrink-0">
+                              <ThumbsUp
+                                weight="regular"
+                                className={`h-4 w-4 transition-opacity ${isHearted ? 'opacity-0' : 'group-hover:opacity-0'}`}
+                              />
+                              <ThumbsUp
+                                weight="fill"
+                                className={`absolute inset-0 h-4 w-4 transition-opacity ${isHearted ? 'opacity-100 text-white' : 'opacity-0 group-hover:opacity-100'}`}
+                              />
+                            </span>
+                            <span>{heartCount}</span>
+                          </button>
+                          <span className="text-muted-foreground">•</span>
+                          <button
+                            onClick={() => {
+                              setDiscussionOpen(true);
+                              setTimeout(() => {
+                                document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              }, 100);
+                            }}
+                            className="group flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
+                            style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.875rem', letterSpacing: '-0.02em' }}
+                          >
+                            <span className="relative inline-flex h-4 w-4 shrink-0">
+                              <Chat weight="regular" className="h-4 w-4 transition-opacity group-hover:opacity-0" />
+                              <Chat weight="fill" className="absolute inset-0 h-4 w-4 transition-opacity opacity-0 group-hover:opacity-100" />
+                            </span>
+                            {project.comments}
+                          </button>
+                        </div>
                         <span className="text-muted-foreground hidden sm:inline">•</span>
                         <button
                           className="hidden sm:flex items-center gap-1.5 text-muted-foreground hover:text-[#1782FF] transition-colors"
